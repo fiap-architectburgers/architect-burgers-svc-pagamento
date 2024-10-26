@@ -1,0 +1,49 @@
+###
+# @name Consulta itens do cardápio
+GET {{baseUrl}}/cardapio
+
+# # #
+# # # ######### Serviços administrativos
+
+###
+# @name Listar itens de cardápio por tipo
+GET {{baseUrl}}/cardapio?tipo=ACOMPANHAMENTO
+
+###
+# @name Cadastrar um item no cardápio
+POST {{baseUrl}}/cardapio
+Content-Type: application/json
+
+{
+  "tipo": "ACOMPANHAMENTO",
+  "nome": "Onion Rings",
+  "descricao": "Porção de anéis de cebola empanados",
+  "valor": {
+    "raw": "15.00"
+  }
+}
+
+###
+# @name Atualizar um item do cardápio
+PUT {{baseUrl}}/cardapio/9
+Content-Type: application/json
+
+{
+  "tipo": "ACOMPANHAMENTO",
+  "nome": "Onion Rings M",
+  "descricao": "Porção de anéis de cebola empanados tamanho médio",
+  "valor": {
+    "raw": "16.00"
+  }
+}
+
+###
+# @name Excluir um item do cardápio
+DELETE {{baseUrl}}/cardapio/9
+
+
+# # #
+# # # ######### Serviços genéricos
+
+###
+GET {{baseUrl}}/healthcheck
