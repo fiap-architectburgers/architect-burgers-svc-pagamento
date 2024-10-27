@@ -112,8 +112,10 @@ public class PagamentoUseCases {
 
         List<Pedido> pedidos = pagamentoGateway.verificarPedidosComPagamentoEmAberto();
 
-        for (Pedido pedido : pedidos){
-            iniciarPagamento(pedido);
+        if (pedidos != null) {
+            for (Pedido pedido : pedidos) {
+                iniciarPagamento(pedido);
+            }
         }
     }
 }

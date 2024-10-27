@@ -10,9 +10,12 @@ import com.example.gomesrodris.archburgers.domain.usecaseparam.DescricaoFormaPag
 import com.example.gomesrodris.archburgers.domain.usecases.PagamentoUseCases;
 import com.example.gomesrodris.archburgers.domain.utils.Clock;
 import com.example.gomesrodris.archburgers.domain.valueobjects.IdFormaPagamento;
+import jakarta.annotation.PostConstruct;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
+
 
 public class PagamentoController {
     private final PagamentoUseCases pagamentoUseCases;
@@ -50,7 +53,7 @@ public class PagamentoController {
         return pagamentoUseCases.consultarPagamento(idPedido);
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 10000, initialDelay = 20000)
     public void processarPagamentos(){
         System.out.println("processarPagamentos");
         System.out.println("chamar use case iniciarPagamento ou finalizar pagamento");

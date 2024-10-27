@@ -29,7 +29,14 @@ public class PagamentoAwsSQS implements PagamentoEventMessaging {
     public List<Pedido> verificarPedidosComPagamentoEmAberto() {
         System.out.println("PagamentoAwsSQS - verificarPedidosComPagamentosEmAberto");
         List<Message> messages = awsSQSApi.receiveMessages(awsSQSApi.getPedidosQueueUrl());
-        System.out.println("messages - " + messages.toString());
+
+        for (Message message : messages) {
+            String messageBody = message.body();
+            System.out.println("Received message: " + messageBody);
+
+            awsSQSApi.deleteMessageFromQueue(awsSQSApi.getPedidosQueueUrl(), message);
+        }
+
         return null;
     }
 

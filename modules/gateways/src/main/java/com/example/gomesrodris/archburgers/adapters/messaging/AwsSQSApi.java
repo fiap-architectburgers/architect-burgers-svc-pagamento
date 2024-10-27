@@ -81,6 +81,27 @@ public class AwsSQSApi {
         return null;
     }
 
+    public void deleteMessageFromQueue(String queueUrl, Message message){
+
+        System.out.println("\nDelete message - " + message.body());
+
+        SqsClient sqsClient = SqsClient.builder()
+                .region(Region.US_EAST_1)
+                .endpointOverride(URI.create(sqsEndpoint))
+                .build();
+
+        String receiptHandle = message.receiptHandle();
+
+        // Delete the message from the queue
+        DeleteMessageRequest deleteMessageRequest = DeleteMessageRequest.builder()
+                .queueUrl(queueUrl)
+                .receiptHandle(receiptHandle)
+                .build();
+        sqsClient.deleteMessage(deleteMessageRequest);
+
+        System.out.println("\nMessage deleted");
+    }
+
     public String getPagamentosEmAbertoQueueName() {
         return pedidosQueueName;
     }
