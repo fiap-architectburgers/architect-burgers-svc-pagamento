@@ -52,7 +52,7 @@ public record Pagamento(
         JSONObject jo = new JSONObject();
         jo.put("id", this.id());
         jo.put("idPedido", this.idPedido());
-        jo.put("formaPagamento", this.formaPagamento().codigo());
+        jo.put("formaPagamento", this.formaPagamento().toString());
         jo.put("status", this.status().toString());
         jo.put("valor", this.valor().toString());
         jo.put("dataHoraCriacao", this.dataHoraCriacao().toString());

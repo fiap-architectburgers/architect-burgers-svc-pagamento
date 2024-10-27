@@ -39,7 +39,7 @@ public class FormaPagamentoRegistry {
         var forma = formasPagamento.get(id);
 
         if (forma == null)
-            throw new DomainArgumentException("Forma de pagamento desconhecida: " + id.codigo());
+            throw new DomainArgumentException("Forma de pagamento desconhecida: " + id);
 
         return forma;
     }

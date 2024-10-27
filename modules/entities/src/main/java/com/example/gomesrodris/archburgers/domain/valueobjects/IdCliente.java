@@ -1,4 +1,10 @@
 package com.example.gomesrodris.archburgers.domain.valueobjects;
 
-public record IdCliente(int id) {
+import java.io.Serializable;
+
+public record IdCliente(int id) implements Serializable {
+    public IdCliente(Integer id) {
+        this(id.intValue());
+    }
+
 }

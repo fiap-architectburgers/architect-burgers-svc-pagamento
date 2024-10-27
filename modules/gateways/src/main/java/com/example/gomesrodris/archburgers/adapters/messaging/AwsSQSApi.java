@@ -70,7 +70,7 @@ public class AwsSQSApi {
         try {
             ReceiveMessageRequest receiveMessageRequest = ReceiveMessageRequest.builder()
                     .queueUrl(queueUrl)
-                    .maxNumberOfMessages(5)
+                    .maxNumberOfMessages(10)
                     .build();
             return sqsClient.receiveMessage(receiveMessageRequest).messages();
 

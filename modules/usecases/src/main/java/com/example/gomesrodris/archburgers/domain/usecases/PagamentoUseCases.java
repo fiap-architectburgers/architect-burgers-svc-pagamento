@@ -34,7 +34,8 @@ public class PagamentoUseCases {
     }
 
     public IdFormaPagamento validarFormaPagamento(String idFormaPagamento) throws DomainArgumentException {
-        var formaPagamento = formaPagamentoRegistry.getFormaPagamento(new IdFormaPagamento(idFormaPagamento));
+//        var formaPagamento = formaPagamentoRegistry.getFormaPagamento(new IdFormaPagamento(idFormaPagamento));
+        var formaPagamento = formaPagamentoRegistry.getFormaPagamento(IdFormaPagamento.valueOf(idFormaPagamento));
         return formaPagamento.id();
     }
 

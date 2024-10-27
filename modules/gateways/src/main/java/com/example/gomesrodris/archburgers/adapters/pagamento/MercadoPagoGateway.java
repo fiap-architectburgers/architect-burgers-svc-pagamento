@@ -33,7 +33,8 @@ public class MercadoPagoGateway implements FormaPagamento {
 
     @Override
     public IdFormaPagamento id() {
-        return new IdFormaPagamento("MercadoPago");
+//        return new IdFormaPagamento("MercadoPago");
+        return IdFormaPagamento.valueOf("MERCADO_PAGO");
     }
 
     @Override

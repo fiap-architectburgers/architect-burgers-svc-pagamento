@@ -69,7 +69,8 @@ public class PagamentoRepositoryJdbcImpl implements PagamentoDataSource {
             return new Pagamento(
                     rs.getInt("pagamento_id"),
                     idPedido,
-                    new IdFormaPagamento(rs.getString("forma_pagamento")),
+//                    new IdFormaPagamento(rs.getString("forma_pagamento")),
+                    IdFormaPagamento.valueOf(rs.getString("forma_pagamento")),
                     StatusPagamento.valueOf(rs.getString("status")),
                     new ValorMonetario(rs.getObject("valor", BigDecimal.class)),
                     rs.getObject("data_hora_criacao", LocalDateTime.class),
@@ -87,7 +88,7 @@ public class PagamentoRepositoryJdbcImpl implements PagamentoDataSource {
         try (var connection = databaseConnection.getConnection();
              var stmt = connection.prepareStatement(SQL_INSERT)) {
             stmt.setInt(1, pagamento.idPedido());
-            stmt.setString(2, pagamento.formaPagamento().codigo());
+            stmt.setString(2, pagamento.formaPagamento().toString());
             stmt.setObject(3, pagamento.valor().asBigDecimal());
             stmt.setString(4, pagamento.status().name());
             stmt.setObject(5, pagamento.dataHoraCriacao());
