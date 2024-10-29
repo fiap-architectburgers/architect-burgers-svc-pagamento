@@ -7,6 +7,4 @@ import java.util.List;
 
 public interface PagamentoEventMessaging {
     void notificarStatusPagamento(Pagamento pagamento);
-
-    List<Pedido> verificarPedidosComPagamentoEmAberto();
 }

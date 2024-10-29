@@ -4,6 +4,7 @@ import com.example.gomesrodris.archburgers.adapters.pagamento.MercadoPagoGateway
 import com.example.gomesrodris.archburgers.adapters.presenters.QrCodePresenter;
 import com.example.gomesrodris.archburgers.controller.PagamentoController;
 import com.example.gomesrodris.archburgers.domain.datagateway.ItemCardapioGateway;
+import com.example.gomesrodris.archburgers.domain.datagateway.PagamentoEventMessagingGateway;
 import com.example.gomesrodris.archburgers.domain.datagateway.PagamentoGateway;
 import com.example.gomesrodris.archburgers.domain.external.FormaPagamentoRegistry;
 import com.example.gomesrodris.archburgers.domain.usecases.PagamentoUseCases;
@@ -32,16 +33,18 @@ public class DomainServiceBeans {
     @Bean
     public PagamentoUseCases pagamentoUseCases(FormaPagamentoRegistry formaPagamentoRegistry,
                                                PagamentoGateway pagamentoGateway,
+                                               PagamentoEventMessagingGateway pagamentoEventMessagingGateway,
                                                Clock clock) {
-        return new PagamentoUseCases(formaPagamentoRegistry, pagamentoGateway,
+        return new PagamentoUseCases(formaPagamentoRegistry, pagamentoGateway, pagamentoEventMessagingGateway,
                 clock);
     }
 
     @Bean
     public PagamentoController pagamentoController(FormaPagamentoRegistry formaPagamentoRegistry,
                                                    PagamentoGateway pagamentoGateway,
+                                                   PagamentoEventMessagingGateway pagamentoEventMessagingGateway,
                                                    Clock clock) {
-        return new PagamentoController(formaPagamentoRegistry, pagamentoGateway,
+        return new PagamentoController(formaPagamentoRegistry, pagamentoGateway, pagamentoEventMessagingGateway,
                 clock);
     }
 

@@ -1,6 +1,7 @@
 package com.example.gomesrodris.archburgers.domain.usecases;
 
 import com.example.gomesrodris.archburgers.domain.datagateway.ItemCardapioGateway;
+import com.example.gomesrodris.archburgers.domain.datagateway.PagamentoEventMessagingGateway;
 import com.example.gomesrodris.archburgers.domain.datagateway.PagamentoGateway;
 //import com.example.gomesrodris.archburgers.domain.datagateway.PedidoGateway;
 import com.example.gomesrodris.archburgers.domain.entities.ItemCardapio;
@@ -22,13 +23,16 @@ import java.util.Objects;
 public class PagamentoUseCases {
     private final FormaPagamentoRegistry formaPagamentoRegistry;
     private final PagamentoGateway pagamentoGateway;
+    private final PagamentoEventMessagingGateway pagamentoEventMessagingGateway;
     private final Clock clock;
 
     public PagamentoUseCases(FormaPagamentoRegistry formaPagamentoRegistry,
                              PagamentoGateway pagamentoGateway,
+                             PagamentoEventMessagingGateway pagamentoEventMessagingGateway,
                              Clock clock) {
         this.formaPagamentoRegistry = formaPagamentoRegistry;
         this.pagamentoGateway = pagamentoGateway;
+        this.pagamentoEventMessagingGateway = pagamentoEventMessagingGateway;
 
         this.clock = clock;
     }
@@ -89,7 +93,7 @@ public class PagamentoUseCases {
 
         pagamentoGateway.updateStatus(pagamentoFinalizado);
 
-        pagamentoGateway.notificarStatusPagamento(pagamentoFinalizado);
+        pagamentoEventMessagingGateway.notificarStatusPagamento(pagamentoFinalizado);
 
         return pagamentoFinalizado.status().toString();
     }
@@ -108,15 +112,4 @@ public class PagamentoUseCases {
         pagamentoGateway.excluirPagamento(idPedido);
     }
 
-    public void processarPagamentos(){
-        System.out.println("processarPagamentos Use Case");
-
-        List<Pedido> pedidos = pagamentoGateway.verificarPedidosComPagamentoEmAberto();
-
-        if (pedidos != null) {
-            for (Pedido pedido : pedidos) {
-                iniciarPagamento(pedido);
-            }
-        }
-    }
 }
