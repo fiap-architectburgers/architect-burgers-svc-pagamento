@@ -7,6 +7,10 @@ import com.example.gomesrodris.archburgers.domain.utils.DateUtils;
 
 public class PagamentoPresenter {
 
+    private PagamentoPresenter(){
+        throw new IllegalStateException("Presenter class");
+    }
+
     public static PagamentoDto entityToPresentationDto(Pagamento pagamento) {
         return new PagamentoDto(
                 pagamento.id(),

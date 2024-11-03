@@ -22,7 +22,7 @@ public class DatabaseMigration implements AutoCloseable {
 
     public static void main(String[] args) throws Exception {
         if (args.length != 4) {
-            System.err.println("Usage: DatabaseMigration <driverClass> <dbUrl> <dbUser> <dbPass>");
+            LOGGER.error("Usage: DatabaseMigration <driverClass> <dbUrl> <dbUser> <dbPass>");
             System.exit(1);
         }
 

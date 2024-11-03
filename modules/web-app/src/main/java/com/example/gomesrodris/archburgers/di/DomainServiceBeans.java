@@ -3,7 +3,6 @@ package com.example.gomesrodris.archburgers.di;
 import com.example.gomesrodris.archburgers.adapters.pagamento.MercadoPagoGateway;
 import com.example.gomesrodris.archburgers.adapters.presenters.QrCodePresenter;
 import com.example.gomesrodris.archburgers.controller.PagamentoController;
-import com.example.gomesrodris.archburgers.domain.datagateway.ItemCardapioGateway;
 import com.example.gomesrodris.archburgers.domain.datagateway.PagamentoEventMessagingGateway;
 import com.example.gomesrodris.archburgers.domain.datagateway.PagamentoGateway;
 import com.example.gomesrodris.archburgers.domain.external.FormaPagamentoRegistry;

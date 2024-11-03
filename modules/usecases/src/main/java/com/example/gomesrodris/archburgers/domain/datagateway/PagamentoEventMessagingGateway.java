@@ -1,7 +1,7 @@
-package com.example.gomesrodris.archburgers.domain.messaging;
+package com.example.gomesrodris.archburgers.domain.datagateway;
 
 import com.example.gomesrodris.archburgers.domain.entities.Pagamento;
 
-public interface PagamentoEventMessaging {
+public interface PagamentoEventMessagingGateway {
     void notificarStatusPagamento(Pagamento pagamento);
 }

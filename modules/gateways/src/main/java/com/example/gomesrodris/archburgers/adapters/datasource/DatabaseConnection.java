@@ -94,20 +94,20 @@ public class DatabaseConnection implements TransactionManager, AutoCloseable {
     }
 
     private ComboPooledDataSource buildDataSource(String driverClass, String dbUrl, String dbUser, String dbPass) {
-        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
         try {
-            cpds.setDriverClass(driverClass);
+            comboPooledDataSource.setDriverClass(driverClass);
         } catch (PropertyVetoException e) {
             throw new RuntimeException(e);
         }
-        cpds.setJdbcUrl(dbUrl);
-        cpds.setUser(dbUser);
-        cpds.setPassword(dbPass);
+        comboPooledDataSource.setJdbcUrl(dbUrl);
+        comboPooledDataSource.setUser(dbUser);
+        comboPooledDataSource.setPassword(dbPass);
 
-        cpds.setMinPoolSize(1);
-        cpds.setMaxPoolSize(10);
+        comboPooledDataSource.setMinPoolSize(1);
+        comboPooledDataSource.setMaxPoolSize(10);
 
-        return cpds;
+        return comboPooledDataSource;
     }
 
     @Override

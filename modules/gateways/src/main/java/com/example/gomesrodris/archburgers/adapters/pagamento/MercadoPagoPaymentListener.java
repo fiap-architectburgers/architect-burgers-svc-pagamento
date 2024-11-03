@@ -21,6 +21,8 @@ public class MercadoPagoPaymentListener {
     }
 
     public void notificarUpdate(String urlId, Map<String, String> headers, Map<String, Object> data) {
+
+        LOGGER.debug(headers.toString());
         var updatedOrder = mercadoPagoApi.getOrder((String) data.get("resource"), urlId);
 
         String paymentStatus = (String) updatedOrder.get("order_status");

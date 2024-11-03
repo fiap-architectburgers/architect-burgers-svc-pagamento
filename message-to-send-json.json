@@ -1,0 +1,45 @@
+
+aws sqs create-queue --queue-name pedidos
+aws sqs create-queue --queue-name pagamentos_concluidos
+
+
+aws sqs send-message --queue-url pedidos --message-body '{
+    \"id\": 34,
+    \"idClienteIdentificado\": 123,
+    \"itens\": [
+      {
+        \"numSequencia\": 1,
+        \"itemCardapio\": {
+          \"id\": 101,
+          \"tipo\": \"LANCHE\",
+          \"nome\": \"Bife a milanesa\",
+          \"descricao\": \"Bife empanado com batata frita\",
+          \"valor\": \"25.99\"
+        }
+      },
+      {
+        \"numSequencia\": 2,
+        \"itemCardapio\": {
+          \"id\": 102,
+          \"tipo\": \"BEBIDA\",
+          \"nome\": \"Coca-Cola\",
+          \"descricao\": \"Lata 350ml\",
+          \"valor\": \"5.00\"
+        }
+      },
+      {
+        \"numSequencia\": 3,
+        \"itemCardapio\": {
+          \"id\": 103,
+          \"tipo\": \"SOBREMESA\",
+          \"nome\": \"Pudim\",
+          \"descricao\": \"Pudim de leite\",
+          \"valor\": "6.99"
+        }
+      }
+    ],
+    \"observacoes\": \"Sem sal\",
+    \"status\": \"PAGAMENTO\",
+    \"formaPagamento\": \"MERCADO_PAGO\",
+    \"dataHoraPedido\": \"2024-10-30T23:07:00Z\"
+ }'

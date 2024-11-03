@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
 
 @Service
 public class MercadoPagoGateway implements FormaPagamento {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MercadoPagoGateway.class);
 
     private final MercadoPagoApi mercadoPagoApi;
 

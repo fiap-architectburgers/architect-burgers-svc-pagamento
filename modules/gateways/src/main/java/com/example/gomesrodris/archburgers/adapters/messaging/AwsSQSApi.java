@@ -10,6 +10,7 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,15 +53,17 @@ public class AwsSQSApi {
                     .build();
             sqsClient.sendMessage(sendMsgRequest);
 
-            System.out.println("Message sent successfully!");
+            LOGGER.info("Message sent successfully!");
+
         } catch (SqsException e) {
-            throw e;
+            LOGGER.error(e.getMessage());
+            System.exit(1);
         }
     }
 
     public List<Message> receiveMessages(String queueUrl) {
 
-        System.out.println("\nReceive messages");
+        LOGGER.info("\nReceive messages");
 
         SqsClient sqsClient = SqsClient.builder()
                 .region(Region.US_EAST_1)
@@ -75,15 +78,16 @@ public class AwsSQSApi {
             return sqsClient.receiveMessage(receiveMessageRequest).messages();
 
         } catch (SqsException e) {
-            System.err.println(e.awsErrorDetails().errorMessage());
+            LOGGER.error(e.awsErrorDetails().errorMessage());
             System.exit(1);
+            return new ArrayList<Message>();
         }
-        return null;
+
     }
 
     public void deleteMessageFromQueue(String queueUrl, Message message){
 
-        System.out.println("\nDelete message - " + message.body());
+        LOGGER.info("Delete message - " + message.body());
 
         SqsClient sqsClient = SqsClient.builder()
                 .region(Region.US_EAST_1)
@@ -99,7 +103,7 @@ public class AwsSQSApi {
                 .build();
         sqsClient.deleteMessage(deleteMessageRequest);
 
-        System.out.println("\nMessage deleted");
+        LOGGER.info("\nMessage deleted");
     }
 
     public String getPagamentosEmAbertoQueueName() {

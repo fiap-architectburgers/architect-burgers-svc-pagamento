@@ -1,9 +1,7 @@
 package com.example.gomesrodris.archburgers.domain.usecases;
 
-import com.example.gomesrodris.archburgers.domain.datagateway.ItemCardapioGateway;
 import com.example.gomesrodris.archburgers.domain.datagateway.PagamentoEventMessagingGateway;
 import com.example.gomesrodris.archburgers.domain.datagateway.PagamentoGateway;
-//import com.example.gomesrodris.archburgers.domain.datagateway.PedidoGateway;
 import com.example.gomesrodris.archburgers.domain.entities.ItemCardapio;
 import com.example.gomesrodris.archburgers.domain.entities.ItemPedido;
 import com.example.gomesrodris.archburgers.domain.entities.Pagamento;

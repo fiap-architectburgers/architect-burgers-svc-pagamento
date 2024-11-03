@@ -3,30 +3,49 @@ package com.example.gomesrodris.archburgers.domain.utils;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class StringUtilsTest {
+class StringUtilsTest {
 
     @Test
-    public void isEmpty_nullString_returnsTrue() {
+    void isEmpty_nullString_returnsTrue() {
         boolean result = StringUtils.isEmpty(null);
         assertThat(result).isTrue();
     }
 
     @Test
-    public void isEmpty_emptyString_returnsTrue() {
+    void isEmpty_emptyString_returnsTrue() {
         boolean result = StringUtils.isEmpty("");
         assertThat(result).isTrue();
     }
 
     @Test
-    public void isEmpty_stringWithOnlySpaces_returnsTrue() {
+    void isEmpty_stringWithOnlySpaces_returnsTrue() {
         boolean result = StringUtils.isEmpty("   ");
         assertThat(result).isTrue();
     }
 
     @Test
-    public void isEmpty_nonEmptyString_returnsFalse() {
+    void isEmpty_nonEmptyString_returnsFalse() {
         boolean result = StringUtils.isEmpty("nonEmptyString");
         assertThat(result).isFalse();
+    }
+
+    @Test
+    public void testIsEmpty() {
+        assertTrue(StringUtils.isEmpty(null));
+        assertTrue(StringUtils.isEmpty(""));
+        assertTrue(StringUtils.isEmpty("   "));
+        assertFalse(StringUtils.isEmpty(" hello  "));
+    }
+
+    @Test
+    public void testIsNotEmpty()
+    {
+        assertFalse(StringUtils.isNotEmpty(null));
+        assertFalse(StringUtils.isNotEmpty(""));
+        assertFalse(StringUtils.isNotEmpty("   "));
+        assertTrue(StringUtils.isNotEmpty(" hello  "));
     }
 }

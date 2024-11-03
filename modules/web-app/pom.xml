@@ -119,37 +119,45 @@
                         <archburgers.datasource.dbUrl>jdbc:postgresql://localhost/archburgers_svc_pagamento?autoReconnect=true</archburgers.datasource.dbUrl>
                         <archburgers.datasource.dbUser>burger_user_pagamento</archburgers.datasource.dbUser>
                         <archburgers.datasource.dbPass>burgerYeah</archburgers.datasource.dbPass>
+                        <!--
+                                                <archburgers.integration.mercadopago.apiBaseUrl>https://api.mercadopago.com</archburgers.integration.mercadopago.apiBaseUrl>
+                                                <archburgers.integration.mercadopago.userId>1898521889</archburgers.integration.mercadopago.userId>
+                                                <archburgers.integration.mercadopago.accessToken>APP_USR-5895347274256581-071317-d4d6b7289bb3a84a0edb8388342a8c3d-1898521889</archburgers.integration.mercadopago.accessToken>
+                                                <archburgers.integration.mercadopago.posId>LOJA1POS1</archburgers.integration.mercadopago.posId>
+                                                <archburgers.integration.mercadopago.notificationUrl>https://gomesrodris-mplabs.requestcatcher.com/payment-hooks/mercadopago</archburgers.integration.mercadopago.notificationUrl>
+                        -->
 
                         <archburgers.integration.mercadopago.apiBaseUrl>https://api.mercadopago.com</archburgers.integration.mercadopago.apiBaseUrl>
-                        <archburgers.integration.mercadopago.userId>1898521889</archburgers.integration.mercadopago.userId>
-                        <archburgers.integration.mercadopago.accessToken>APP_USR-5895347274256581-071317-d4d6b7289bb3a84a0edb8388342a8c3d-1898521889</archburgers.integration.mercadopago.accessToken>
-                        <archburgers.integration.mercadopago.posId>LOJA1POS1</archburgers.integration.mercadopago.posId>
-                        <archburgers.integration.mercadopago.notificationUrl>https://gomesrodris-mplabs.requestcatcher.com/payment-hooks/mercadopago</archburgers.integration.mercadopago.notificationUrl>
+                        <archburgers.integration.mercadopago.userId>1229643287</archburgers.integration.mercadopago.userId>
+                        <archburgers.integration.mercadopago.accessToken>TEST-3584784290901391-102821-477ff088caf312859d770f759c9ab95e-1229643287</archburgers.integration.mercadopago.accessToken>
+                        <archburgers.integration.mercadopago.posId>Vendedor</archburgers.integration.mercadopago.posId>
+                        <archburgers.integration.mercadopago.notificationUrl>https://webhook.site/4eaad461-b8b8-494a-a964-40ed732cf286</archburgers.integration.mercadopago.notificationUrl>
+
 
                         <archburgers.integration.sqs.sqsEndpoint>http://localhost:4566</archburgers.integration.sqs.sqsEndpoint>
-                        <archburgers.integration.sqs.pedidosQueueName>pedidos</archburgers.integration.sqs.pedidosQueueName>
-                        <archburgers.integration.sqs.pedidosQueueUrl>http://localhost:4566/000000000000/pedidos</archburgers.integration.sqs.pedidosQueueUrl>
-                        <archburgers.integration.sqs.pagamentosConcluidosQueueName>pagamentos_concluidos</archburgers.integration.sqs.pagamentosConcluidosQueueName>
-                        <archburgers.integration.sqs.pagamentosConcluidosQueueUrl>http://localhost:4566/000000000000/pagamentos_concluidos</archburgers.integration.sqs.pagamentosConcluidosQueueUrl>
+                                                <archburgers.integration.sqs.pedidosQueueName>pedidos</archburgers.integration.sqs.pedidosQueueName>
+                                                <archburgers.integration.sqs.pedidosQueueUrl>http://localhost:4566/000000000000/pedidos</archburgers.integration.sqs.pedidosQueueUrl>
+                                                <archburgers.integration.sqs.pagamentosConcluidosQueueName>pagamentos_concluidos</archburgers.integration.sqs.pagamentosConcluidosQueueName>
+                                                <archburgers.integration.sqs.pagamentosConcluidosQueueUrl>http://localhost:4566/000000000000/pagamentos_concluidos</archburgers.integration.sqs.pagamentosConcluidosQueueUrl>
 
 
-                    </environmentVariables>
-                </configuration>
-            </plugin>
+                                            </environmentVariables>
+                                        </configuration>
+                                    </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>com.example.gomesrodris.archburgers.ArchitectBurgersApiApplication</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+                                    <plugin>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-jar-plugin</artifactId>
+                                        <configuration>
+                                            <archive>
+                                                <manifest>
+                                                    <addClasspath>true</addClasspath>
+                                                    <mainClass>com.example.gomesrodris.archburgers.ArchitectBurgersApiApplication</mainClass>
+                                                </manifest>
+                                            </archive>
+                                        </configuration>
+                                    </plugin>
+                                </plugins>
+                            </build>
 
-</project>
+                        </project>
