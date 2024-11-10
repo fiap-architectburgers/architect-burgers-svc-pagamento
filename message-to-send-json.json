@@ -1,10 +1,19 @@
+D:\Program Files\PostgreSQL\16\bin
+cd '.\Program Files\PostgreSQL\16\bin\'
+.\psql.exe -U postgres archburgers_svc_pagamento
 
-aws sqs create-queue --queue-name pedidos
+select * from pagamento;
+
+
+
+aws sqs create-queue --queue-name pagamentosEmAberto
 aws sqs create-queue --queue-name pagamentos_concluidos
 
+aws sqs purge-queue --queue-url http://localhost:4566/000000000000/pagamentosEmAberto
+aws sqs receive-message --queue-url http://localhost:4566/000000000000/pagamentos_concluidos --max-number-of-messages 10
 
-aws sqs send-message --queue-url pedidos --message-body '{
-    \"id\": 34,
+aws sqs send-message --queue-url pagamentosEmAberto --message-body '{
+    \"id\": 45,
     \"idClienteIdentificado\": 123,
     \"itens\": [
       {
@@ -41,5 +50,9 @@ aws sqs send-message --queue-url pedidos --message-body '{
     \"observacoes\": \"Sem sal\",
     \"status\": \"PAGAMENTO\",
     \"formaPagamento\": \"MERCADO_PAGO\",
-    \"dataHoraPedido\": \"2024-10-30T23:07:00Z\"
+    \"dataHoraPedido\": \"2024-11-09T22:47:00Z\"
  }'
+ 
+ 
+ 
+ {\"formaPagamento\":\"MERCADO_PAGO\",\"dataHoraAtualizacao\":\"2024-11-09T22:44:50.944394600\",\"codigoPagamentoCliente\":\"00020101021243650016COM.MERCADOLIBRE020130636797a9e62-6bff-4e6f-9f0b-80044f0321dc5204000053039865802BR5909Test Test6009SAO PAULO62070503***6304A126\",\"valor\":\"R$37.98\",\"dataHoraCriacao\":\"2024-11-09T22:43:49.138031200\",\"idPedidoSistemaExterno\":\"24830521217\",\"_id\":\"67300fd563e2e048c19a38b6\",\"idPedido\":45,\"status\":\"FINALIZADO\"}

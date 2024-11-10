@@ -5,7 +5,7 @@ import com.example.gomesrodris.archburgers.domain.entities.Pagamento;
 import com.example.gomesrodris.archburgers.domain.messaging.PagamentoEventMessaging;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public class PagamentoEventMessagingGatewayImpl implements PagamentoEventMessagingGateway {
 
     private final PagamentoEventMessaging pagamentoEventMessaging;

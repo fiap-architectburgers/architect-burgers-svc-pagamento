@@ -4,11 +4,14 @@ import com.example.gomesrodris.archburgers.adapters.testUtils.TestLocale;
 import com.example.gomesrodris.archburgers.domain.valueobjects.ValorMonetario;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ExtendWith(MockitoExtension.class)
 class ValorMonetarioDtoTest {
 
     @BeforeAll

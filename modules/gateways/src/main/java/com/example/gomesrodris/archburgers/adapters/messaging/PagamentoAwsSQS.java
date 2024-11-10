@@ -18,6 +18,6 @@ public class PagamentoAwsSQS implements PagamentoEventMessaging {
 
     @Override
     public void notificarStatusPagamento(Pagamento pagamento) {
-        awsSQSApi.sendMessage(awsSQSApi.getPagamentosConcluidosQueueName(), awsSQSApi.getPagamentosConcluidosQueueUrl(), pagamento.toString());
+        awsSQSApi.sendMessage(awsSQSApi.getPagamentosConcluidosQueueName(), awsSQSApi.getPagamentosConcluidosQueueUrl(), pagamento.getPagamentoJson());
     }
 }

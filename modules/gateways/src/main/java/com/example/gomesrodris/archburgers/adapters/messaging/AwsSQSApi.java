@@ -12,24 +12,31 @@ import software.amazon.awssdk.services.sqs.model.*;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AwsSQSApi {
     private static final Logger LOGGER = LoggerFactory.getLogger(AwsSQSApi.class);
 
     private String sqsEndpoint;
-    private String pedidosQueueName;
-    private String pedidosQueueUrl;
+    private String pagamentosEmAbertoQueueName;
+    private String pagamentosEmAbertoQueueUrl;
     private String pagamentosConcluidosQueueName;
     private String pagamentosConcluidosQueueUrl;
 
     @Autowired
     public AwsSQSApi(Environment environment) {
         this.sqsEndpoint = environment.getProperty("archburgers.integration.sqs.sqsEndpoint");
-        this.pedidosQueueName = environment.getProperty("archburgers.integration.sqs.pedidosQueueName");
-        this.pedidosQueueUrl = environment.getProperty("archburgers.integration.sqs.pedidosQueueUrl");
+        this.pagamentosEmAbertoQueueName = environment.getProperty("archburgers.integration.sqs.pagamentosEmAbertoQueueName");
+        this.pagamentosEmAbertoQueueUrl = environment.getProperty("archburgers.integration.sqs.pagamentosEmAbertoQueueUrl");
         this.pagamentosConcluidosQueueName = environment.getProperty("archburgers.integration.sqs.pagamentosConcluidosQueueName");
         this.pagamentosConcluidosQueueUrl = environment.getProperty("archburgers.integration.sqs.pagamentosConcluidosQueueUrl");
+
+        this.sqsEndpoint = Objects.requireNonNull(sqsEndpoint, "archburgers.integration.sqs.sqsEndpoint not set");
+        this.pagamentosEmAbertoQueueName = Objects.requireNonNull(pagamentosEmAbertoQueueName, "archburgers.integration.sqs.pagamentosEmAbertoQueueName not set");
+        this.pagamentosEmAbertoQueueUrl = Objects.requireNonNull(pagamentosEmAbertoQueueUrl, "archburgers.integration.sqs.pagamentosEmAbertoQueueUrl not set");
+        this.pagamentosConcluidosQueueName = Objects.requireNonNull(pagamentosConcluidosQueueName, "archburgers.integration.sqs.pagamentosConcluidosQueueName not set");
+        this.pagamentosConcluidosQueueUrl = Objects.requireNonNull(pagamentosConcluidosQueueUrl, "archburgers.integration.sqs.pagamentosConcluidosQueueUrl not set");
     }
 
     public void sendMessage(String queueName, String queueUrl, String message) {
@@ -107,34 +114,20 @@ public class AwsSQSApi {
     }
 
     public String getPagamentosEmAbertoQueueName() {
-        return pedidosQueueName;
+        return pagamentosEmAbertoQueueName;
     }
 
-    public void setPagamentosEmAbertoQueueName(String pedidosQueueName) {
-        this.pedidosQueueName = pedidosQueueName;
-    }
-
-    public String getPedidosQueueUrl() {
-        return pedidosQueueUrl;
-    }
-
-    public void setPedidosQueueUrl(String pedidosQueueUrl) {
-        this.pedidosQueueUrl = pedidosQueueUrl;
+    public String getPagamentosEmAbertoQueueUrl() {
+        return pagamentosEmAbertoQueueUrl;
     }
 
     public String getPagamentosConcluidosQueueName() {
         return pagamentosConcluidosQueueName;
     }
 
-    public void setPagamentosConcluidosQueueName(String pagamentosConcluidosQueueName) {
-        this.pagamentosConcluidosQueueName = pagamentosConcluidosQueueName;
-    }
-
     public String getPagamentosConcluidosQueueUrl() {
         return pagamentosConcluidosQueueUrl;
     }
 
-    public void setPagamentosConcluidosQueueUrl(String pagamentosConcluidosQueueUrl) {
-        this.pagamentosConcluidosQueueUrl = pagamentosConcluidosQueueUrl;
-    }
+
 }

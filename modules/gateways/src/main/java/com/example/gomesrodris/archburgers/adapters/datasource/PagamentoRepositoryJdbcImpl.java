@@ -7,7 +7,7 @@ import com.example.gomesrodris.archburgers.domain.valueobjects.StatusPagamento;
 import com.example.gomesrodris.archburgers.domain.valueobjects.ValorMonetario;
 import org.intellij.lang.annotations.Language;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -17,7 +17,7 @@ import java.util.Objects;
 /**
  * Implementation of the Repository based on a relational database via JDBC
  */
-@Repository
+@Qualifier("SqlDb")
 public class PagamentoRepositoryJdbcImpl implements PagamentoDataSource {
     @Language("SQL")
     private static final String SQL_FIND_BY_PEDIDO = """
@@ -67,7 +67,8 @@ public class PagamentoRepositoryJdbcImpl implements PagamentoDataSource {
             }
 
             return new Pagamento(
-                    rs.getInt("pagamento_id"),
+//                    rs.getInt("pagamento_id"),
+                    rs.getString("pagamento_id"),
                     idPedido,
 //                    new IdFormaPagamento(rs.getString("forma_pagamento")),
                     IdFormaPagamento.valueOf(rs.getString("forma_pagamento")),
@@ -102,7 +103,8 @@ public class PagamentoRepositoryJdbcImpl implements PagamentoDataSource {
                 throw new IllegalStateException("Inconsistent state! Insert was supposed to return 1");
             }
 
-            return pagamento.withId(rs.getInt(1));
+//            return pagamento.withId(rs.getInt(1));
+            return pagamento.withId(rs.getString(1));
 
         } catch (SQLException e) {
             throw new RuntimeException("(" + this.getClass().getSimpleName() + ") Database error: " + e.getMessage(), e);
@@ -112,7 +114,7 @@ public class PagamentoRepositoryJdbcImpl implements PagamentoDataSource {
     @Override
     public void updateStatus(Pagamento pagamento) {
         String status = Objects.requireNonNull(pagamento.status(), "Status deve estar persistido antes do Update").name();
-        int id = Objects.requireNonNull(pagamento.id(), "Pagamento deve estar persistido antes do Update");
+        String id = Objects.requireNonNull(pagamento.id(), "Pagamento deve estar persistido antes do Update");
 
         try (var connection = databaseConnection.getConnection();
              var stmt = connection.prepareStatement(SQL_UPDATE_STATUS)) {
@@ -120,7 +122,8 @@ public class PagamentoRepositoryJdbcImpl implements PagamentoDataSource {
             stmt.setString(1, status);
             stmt.setObject(2, pagamento.dataHoraAtualizacao());
             stmt.setString(3, pagamento.idPedidoSistemaExterno());
-            stmt.setInt(4, id);
+//            stmt.setInt(4, id);
+            stmt.setString(4, id);
 
             stmt.executeUpdate();
         } catch (SQLException e) {

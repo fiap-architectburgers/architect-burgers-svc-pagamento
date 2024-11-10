@@ -181,7 +181,7 @@ class PagamentoUseCasesTest {
         String codigoPagamentoCliente = "123456";
         String idPedidoSistemaExterno = "123";
 //        Pagamento pagamentoValido = Pagamento.registroInicial(pedido.id(), pedido.formaPagamento(), pedido.getValorTotal(), dataHoraPedido, codigoPagamentoCliente, idPedidoSistemaExterno);
-        Pagamento pagamento = new Pagamento(233, pedido.id(), pedido.formaPagamento(), StatusPagamento.FINALIZADO, pedido.getValorTotal(), dataHoraPedido, dataHoraPedido, codigoPagamentoCliente, idPedidoSistemaExterno);
+        Pagamento pagamento = new Pagamento("233", pedido.id(), pedido.formaPagamento(), StatusPagamento.FINALIZADO, pedido.getValorTotal(), dataHoraPedido, dataHoraPedido, codigoPagamentoCliente, idPedidoSistemaExterno);
 //
         when(pagamentoGateway.findPagamentoByPedido(pedido.id())).thenReturn(pagamento);
 

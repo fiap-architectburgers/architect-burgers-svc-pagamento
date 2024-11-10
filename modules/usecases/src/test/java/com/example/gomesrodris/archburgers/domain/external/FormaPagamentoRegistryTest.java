@@ -1,7 +1,6 @@
 package com.example.gomesrodris.archburgers.domain.external;
 
 import com.example.gomesrodris.archburgers.domain.entities.Pedido;
-import com.example.gomesrodris.archburgers.domain.exception.DomainArgumentException;
 import com.example.gomesrodris.archburgers.domain.valueobjects.IdFormaPagamento;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +14,8 @@ class FormaPagamentoRegistryTest {
 
     @Test
     void validarConstrutorComParametroNulo() {
-        assertThrows(IllegalArgumentException.class, () -> new FormaPagamentoRegistry(null));
+//        assertThrows(IllegalArgumentException.class, () -> new FormaPagamentoRegistry(null));
+        assertThrows(NullPointerException.class, () -> new FormaPagamentoRegistry(null));
     }
 
     @Test
@@ -59,7 +59,8 @@ class FormaPagamentoRegistryTest {
     @Test
     void validarGetFormaPagamento() {
         FormaPagamentoRegistry registry = new FormaPagamentoRegistry(new ArrayList<>());
-        assertThrows(IllegalArgumentException.class, () -> registry.getFormaPagamento(null));
+//        assertThrows(IllegalArgumentException.class, () -> registry.getFormaPagamento(null));
+        assertThrows(NullPointerException.class, () -> registry.getFormaPagamento(null));
     }
 
     @Test

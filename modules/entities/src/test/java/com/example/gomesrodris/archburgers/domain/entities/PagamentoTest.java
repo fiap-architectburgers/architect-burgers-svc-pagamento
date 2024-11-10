@@ -100,7 +100,7 @@ class PagamentoTest {
         String idPedidoSistemaExterno = "123";
 
         Pagamento pagamento = Pagamento.registroInicial(idPedido, formaPagamento, valor, dataHora, codigoPagamentoCliente, idPedidoSistemaExterno);
-        int novoId = 10;
+        String novoId = "10";
 
         Pagamento pagamentoComNovoId = pagamento.withId(novoId);
 

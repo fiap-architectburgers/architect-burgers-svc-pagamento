@@ -5,7 +5,7 @@ import com.example.gomesrodris.archburgers.domain.datasource.PagamentoDataSource
 import com.example.gomesrodris.archburgers.domain.entities.Pagamento;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public class PagamentoGatewayImpl implements PagamentoGateway {
     private final PagamentoDataSource pagamentoDataSource;
 

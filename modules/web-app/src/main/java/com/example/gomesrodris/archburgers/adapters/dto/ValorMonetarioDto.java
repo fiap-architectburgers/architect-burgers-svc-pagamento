@@ -4,6 +4,7 @@ import com.example.gomesrodris.archburgers.domain.valueobjects.ValorMonetario;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.NumberFormat;
+import java.util.Locale;
 
 public record ValorMonetarioDto(
         String raw,

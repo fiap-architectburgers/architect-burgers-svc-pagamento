@@ -48,7 +48,7 @@ class DatabaseConnectionIT {
 
         DatabaseConnection.ConnectionInstance conn = databaseConnection.getConnection();
         try {
-            PreparedStatement stmt = conn.prepareStatement("update cliente set nome = 'Novo Nome XYZ' where cliente_id = ?");
+            PreparedStatement stmt = conn.prepareStatement("update pagamento set id_pedido = 10 where pagamento_id = ?");
             stmt.setInt(1, 2);
             stmt.execute();
             stmt.close();
@@ -62,20 +62,20 @@ class DatabaseConnectionIT {
         assertThat(databaseConnection.isInTransaction()).isFalse();
 
         // Check in an exclusive new connection
-        AtomicReference<String> newValue = new AtomicReference<>();
+        AtomicReference<Integer> newValue = new AtomicReference<>();
 
         try (Connection directConnection = DriverManager.getConnection(
                 realDatabase.getJdbcUrl(), realDatabase.getJdbcUsername(), realDatabase.getJdbcPassword())) {
-            PreparedStatement checkStmt = directConnection.prepareStatement("select nome from cliente where cliente_id = ?");
+            PreparedStatement checkStmt = directConnection.prepareStatement("select id_pedido from pagamento where pagamento_id = ?");
             checkStmt.setInt(1, 2);
             var rs = checkStmt.executeQuery();
             assertThat(rs.next()).isTrue();
-            newValue.set(rs.getString(1));
+            newValue.set(rs.getInt(1));
             rs.close();
             checkStmt.close();
         }
 
-        assertThat(newValue.get()).isEqualTo("Novo Nome XYZ");
+        assertThat(newValue.get()).isEqualTo(10);
     }
 
     @Test
@@ -105,7 +105,7 @@ class DatabaseConnectionIT {
             // 1. Obtém conexão e realiza uma mudança
             DatabaseConnection.ConnectionInstance conn = databaseConnection.getConnection();
             try {
-                PreparedStatement stmt = conn.prepareStatement("update cliente set nome = 'Novo Nome XYZ' where cliente_id = ?");
+                PreparedStatement stmt = conn.prepareStatement("update pagamento set id_pedido = 10 where pagamento_id = ?");
                 stmt.setInt(1, 2);
                 stmt.execute();
                 stmt.close();
@@ -122,8 +122,8 @@ class DatabaseConnectionIT {
             // 3. Em uma "nova" conexão, realiza uma segunda mudança
             conn = databaseConnection.getConnection();
             try {
-                PreparedStatement stmt2 = conn.prepareStatement("update item_cardapio set nome = 'Novo Item AbC' where item_cardapio_id = ?");
-                stmt2.setInt(1, 7);
+                PreparedStatement stmt2 = conn.prepareStatement("update pagamento set id_pedido = 11 where pagamento_id = ?");
+                stmt2.setInt(1, 1);
                 stmt2.execute();
                 stmt2.close();
 
@@ -153,34 +153,34 @@ class DatabaseConnectionIT {
         assertThat(conn1.get()).isSameAs(conn2.get());
         assertThat(conn1.get().isClosed()).isTrue();
 
-        AtomicReference<String> newValue1 = new AtomicReference<>();
-        AtomicReference<String> newValue2 = new AtomicReference<>();
+        AtomicReference<Integer> newValue1 = new AtomicReference<>();
+        AtomicReference<Integer> newValue2 = new AtomicReference<>();
 
         // 8. Obtém uma nova e exclusiva conexão direta para checar se as alterações estão persistidas
         //    Consulta ambos os valores modificados na transação anterior, comparando com o que foi definido
         try (Connection directConnection = DriverManager.getConnection(
                 realDatabase.getJdbcUrl(), realDatabase.getJdbcUsername(), realDatabase.getJdbcPassword())) {
             {
-                PreparedStatement checkStmt = directConnection.prepareStatement("select nome from cliente where cliente_id = ?");
+                PreparedStatement checkStmt = directConnection.prepareStatement("select id_pedido from pagamento where pagamento_id = ?");
                 checkStmt.setInt(1, 2);
                 var rs = checkStmt.executeQuery();
                 assertThat(rs.next()).isTrue();
-                newValue1.set(rs.getString(1));
+                newValue1.set(rs.getInt(1));
                 rs.close();
                 checkStmt.close();
             }
 
-            PreparedStatement checkStmt2 = directConnection.prepareStatement("select nome from item_cardapio where item_cardapio_id = ?");
-            checkStmt2.setInt(1, 7);
+            PreparedStatement checkStmt2 = directConnection.prepareStatement("select id_pedido from pagamento where pagamento_id = ?");
+            checkStmt2.setInt(1, 1);
             var rs2 = checkStmt2.executeQuery();
             assertThat(rs2.next()).isTrue();
-            newValue2.set(rs2.getString(1));
+            newValue2.set(rs2.getInt(1));
             rs2.close();
             checkStmt2.close();
         }
 
-        assertThat(newValue1.get()).isEqualTo("Novo Nome XYZ");
-        assertThat(newValue2.get()).isEqualTo("Novo Item AbC");
+        assertThat(newValue1.get()).isEqualTo(10);
+        assertThat(newValue2.get()).isEqualTo(11);
     }
 
 
@@ -189,14 +189,14 @@ class DatabaseConnectionIT {
         /*
         Testando todos os comportamentos esperados em uma transação que sofreu rollback após uma falha
          */
-        AtomicReference<String> valueInTransaction = new AtomicReference<>();
+        AtomicReference<Integer> valueInTransaction = new AtomicReference<>();
 
         try {
             databaseConnection.runInTransaction(() -> {
                 // 1. Realiza update dentro da transação
                 DatabaseConnection.ConnectionInstance conn = databaseConnection.getConnection();
                 try {
-                    PreparedStatement stmt = conn.prepareStatement("update cliente set nome = 'Novo Nome XYZ v2' where cliente_id = ?");
+                    PreparedStatement stmt = conn.prepareStatement("update pagamento set id_pedido = 5 where pagamento_id = ?");
                     stmt.setInt(1, 1);
                     stmt.execute();
                     stmt.close();
@@ -209,16 +209,16 @@ class DatabaseConnectionIT {
                 // 2. Ainda na mesma transação obtém o resultado do update
                 conn = databaseConnection.getConnection();
                 try {
-                    PreparedStatement checkStmt = conn.prepareStatement("select nome from cliente where cliente_id = ?");
+                    PreparedStatement checkStmt = conn.prepareStatement("select id_pedido from pagamento where pagamento_id = ?");
                     checkStmt.setInt(1, 1);
                     var rs = checkStmt.executeQuery();
                     assertThat(rs.next()).isTrue();
-                    valueInTransaction.set(rs.getString(1));
+                    valueInTransaction.set(rs.getInt(1));
                     rs.close();
                     checkStmt.close();
 
                     // 3. Agora introduz um comando com Erro, que causará o rollback
-                    PreparedStatement returnStmt = conn.prepareStatement("select noNoNo from cliente");
+                    PreparedStatement returnStmt = conn.prepareStatement("select noNoNo from pagamento");
                     returnStmt.executeQuery();
 
                     return null;
@@ -232,24 +232,24 @@ class DatabaseConnectionIT {
             assertThat(e).hasMessageContaining("does not exist");
         }
 
-        assertThat(valueInTransaction.get()).isEqualTo("Novo Nome XYZ v2");
+        assertThat(valueInTransaction.get()).isEqualTo(5);
 
         // 4. Verifica que a alteração feita no primeiro update sofreu rollback
-        AtomicReference<String> newValue1 = new AtomicReference<>();
+        AtomicReference<Integer> newValue1 = new AtomicReference<>();
 
         try (Connection directConnection = DriverManager.getConnection(
                 realDatabase.getJdbcUrl(), realDatabase.getJdbcUsername(), realDatabase.getJdbcPassword())) {
             {
-                PreparedStatement checkStmt = directConnection.prepareStatement("select nome from cliente where cliente_id = ?");
+                PreparedStatement checkStmt = directConnection.prepareStatement("select id_pedido from pagamento where pagamento_id = ?");
                 checkStmt.setInt(1, 1);
                 var rs = checkStmt.executeQuery();
                 assertThat(rs.next()).isTrue();
-                newValue1.set(rs.getString(1));
+                newValue1.set(rs.getInt(1));
                 rs.close();
                 checkStmt.close();
             }
         }
 
-        assertThat(newValue1.get()).isEqualTo("Roberto Carlos"); // Revertido para valor original da Migration
+        assertThat(newValue1.get()).isEqualTo(11); // Revertido para valor original da Migration
     }
 }

@@ -31,7 +31,7 @@ public class PagamentoListenerAwsSQS {
         LOGGER.debug("PagamentoListenerAwsSQS - processarPagamentosEmAberto");
 
         try {
-            List<Message> messages = awsSQSApi.receiveMessages(awsSQSApi.getPedidosQueueUrl());
+            List<Message> messages = awsSQSApi.receiveMessages(awsSQSApi.getPagamentosEmAbertoQueueUrl());
 
             for (Message message : messages) {
                 String messageBody = message.body();
@@ -45,12 +45,10 @@ public class PagamentoListenerAwsSQS {
                 Pedido pedido = objectMapper.readValue(messageBody, Pedido.class);
                 pagamentoController.iniciarPagamento(pedido);
 
-                awsSQSApi.deleteMessageFromQueue(awsSQSApi.getPedidosQueueUrl(), message);
+                awsSQSApi.deleteMessageFromQueue(awsSQSApi.getPagamentosEmAbertoQueueUrl(), message);
             }
         } catch(JsonProcessingException e) {
             LOGGER.error(e.getMessage());
         }
     }
-
-
 }

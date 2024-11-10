@@ -10,7 +10,8 @@ import org.json.JSONObject;
 import java.time.LocalDateTime;
 
 public record Pagamento(
-        @Nullable Integer id,
+//        @Nullable Integer id,
+        @Nullable String id,
         @NotNull Integer idPedido,
         @NotNull IdFormaPagamento formaPagamento,
         @NotNull StatusPagamento status,
@@ -42,7 +43,12 @@ public record Pagamento(
                 valor, dataHoraCriacao, dataHora, codigoPagamentoCliente, newIdSistemaExterno);
     }
 
-    public Pagamento withId(int newId) {
+//    public Pagamento withId(int newId) {
+//        return new Pagamento(newId, idPedido, formaPagamento, status, valor, dataHoraCriacao, dataHoraAtualizacao,
+//                codigoPagamentoCliente, idPedidoSistemaExterno);
+//    }
+
+    public Pagamento withId(String newId) {
         return new Pagamento(newId, idPedido, formaPagamento, status, valor, dataHoraCriacao, dataHoraAtualizacao,
                 codigoPagamentoCliente, idPedidoSistemaExterno);
     }
@@ -50,11 +56,11 @@ public record Pagamento(
     public String getPagamentoJson(){
 
         JSONObject jo = new JSONObject();
-        jo.put("id", this.id());
+        jo.put("_id", this.id());
         jo.put("idPedido", this.idPedido());
         jo.put("formaPagamento", this.formaPagamento().toString());
         jo.put("status", this.status().toString());
-        jo.put("valor", this.valor().toString());
+        jo.put("valor", this.valor().asBigDecimal().toString());
         jo.put("dataHoraCriacao", this.dataHoraCriacao().toString());
         jo.put("dataHoraAtualizacao", this.dataHoraAtualizacao().toString());
         jo.put("codigoPagamentoCliente", this.codigoPagamentoCliente());
