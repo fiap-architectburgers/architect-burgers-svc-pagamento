@@ -15,7 +15,7 @@ public class PagamentoPresenter {
         return new PagamentoDto(
                 pagamento.id(),
                 pagamento.idPedido(),
-                pagamento.formaPagamento().toString(),
+                pagamento.formaPagamento().codigo().toString(),
                 pagamento.status().name(),
                 ValorMonetarioDto.from(pagamento.valor()),
                 DateUtils.toTimestamp(pagamento.dataHoraCriacao()),

@@ -14,8 +14,8 @@ class FormaPagamentoRegistryTest {
 
     @Test
     void validarConstrutorComParametroNulo() {
-//        assertThrows(IllegalArgumentException.class, () -> new FormaPagamentoRegistry(null));
-        assertThrows(NullPointerException.class, () -> new FormaPagamentoRegistry(null));
+        assertThrows(IllegalArgumentException.class, () -> new FormaPagamentoRegistry(null));
+//        assertThrows(NullPointerException.class, () -> new FormaPagamentoRegistry(null));
     }
 
     @Test
@@ -59,8 +59,8 @@ class FormaPagamentoRegistryTest {
     @Test
     void validarGetFormaPagamento() {
         FormaPagamentoRegistry registry = new FormaPagamentoRegistry(new ArrayList<>());
-//        assertThrows(IllegalArgumentException.class, () -> registry.getFormaPagamento(null));
-        assertThrows(NullPointerException.class, () -> registry.getFormaPagamento(null));
+        assertThrows(IllegalArgumentException.class, () -> registry.getFormaPagamento(null));
+//        assertThrows(NullPointerException.class, () -> registry.getFormaPagamento(null));
     }
 
     @Test

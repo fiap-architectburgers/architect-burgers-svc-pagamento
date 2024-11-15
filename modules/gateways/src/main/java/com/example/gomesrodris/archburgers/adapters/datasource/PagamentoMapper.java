@@ -17,16 +17,18 @@ public class PagamentoMapper {
         }
 
         String dataHoraCriacao = document.getString("dataHoraCriacao");
+        String dataHoraAtualizacao = String.valueOf(document.get("dataHoraAtualizacao"));
+
+        DateTimeFormatter formatterAtualizacao = DateTimeFormatter.ISO_LOCAL_DATE_TIME; // Padrão ISO 8601
+        LocalDateTime timeAtualizacao = LocalDateTime.parse(dataHoraAtualizacao, formatterAtualizacao);
+
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME; // Padrão ISO 8601
         LocalDateTime timeCriacao = LocalDateTime.parse(dataHoraCriacao, formatter);
-
-        String dataHoraAtualizacao = document.getString("dataHoraAtualizacao");
-        LocalDateTime timeAtualizacao = LocalDateTime.parse(dataHoraAtualizacao, formatter);
 
         return new Pagamento(
                 document.getObjectId("_id").toString(),
                 document.getInteger("idPedido"),
-                IdFormaPagamento.valueOf(document.getString("formaPagamento")),
+                new IdFormaPagamento(document.getString("formaPagamento")),
                 StatusPagamento.valueOf(document.getString("status")),
                 new ValorMonetario(document.getString("valor")),
                 timeCriacao,

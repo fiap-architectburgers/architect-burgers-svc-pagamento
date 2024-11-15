@@ -37,9 +37,9 @@ class PagamentoPresenterTest {
         PagamentoDto dto = PagamentoPresenter.entityToPresentationDto(pagamento);
 
         // Verify the DTO values
-        assertEquals(233, dto.id());
+        assertEquals("233", dto.id());
         assertEquals(idPedido, dto.idPedido());
-        assertEquals(formaPagamento.toString(), dto.formaPagamento());
+        assertEquals(formaPagamento.codigo().toString(), dto.formaPagamento());
         assertEquals(dataHoraEmMilissegundos, dto.dataHoraCriacao());
         assertEquals(dataHoraEmMilissegundos, dto.dataHoraAtualizacao());
         assertEquals(codigoPagamentoCliente, dto.codigoPagamentoCliente());

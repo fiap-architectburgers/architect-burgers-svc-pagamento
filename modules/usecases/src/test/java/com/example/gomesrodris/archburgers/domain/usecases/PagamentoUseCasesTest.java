@@ -68,7 +68,7 @@ class PagamentoUseCasesTest {
                 itens,
                 "Sem cebola",
                 StatusPedido.RECEBIDO,
-                formaPagamento,
+                formaPagamento.toString(),
                 dataHoraPedido);
     }
 
@@ -157,7 +157,7 @@ class PagamentoUseCasesTest {
                 itensFail,
                 "Sem cebola",
                 StatusPedido.RECEBIDO,
-                formaPagamento,
+                formaPagamento.codigo(),
                 dataHoraPedido);
 
         assertNull(pagamentoUseCases.iniciarPagamento(pedido));
@@ -181,7 +181,7 @@ class PagamentoUseCasesTest {
         String codigoPagamentoCliente = "123456";
         String idPedidoSistemaExterno = "123";
 //        Pagamento pagamentoValido = Pagamento.registroInicial(pedido.id(), pedido.formaPagamento(), pedido.getValorTotal(), dataHoraPedido, codigoPagamentoCliente, idPedidoSistemaExterno);
-        Pagamento pagamento = new Pagamento("233", pedido.id(), pedido.formaPagamento(), StatusPagamento.FINALIZADO, pedido.getValorTotal(), dataHoraPedido, dataHoraPedido, codigoPagamentoCliente, idPedidoSistemaExterno);
+        Pagamento pagamento = new Pagamento("233", pedido.id(), formaPagamento, StatusPagamento.FINALIZADO, pedido.getValorTotal(), dataHoraPedido, dataHoraPedido, codigoPagamentoCliente, idPedidoSistemaExterno);
 //
         when(pagamentoGateway.findPagamentoByPedido(pedido.id())).thenReturn(pagamento);
 

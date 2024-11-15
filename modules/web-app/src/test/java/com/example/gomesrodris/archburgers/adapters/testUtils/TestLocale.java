@@ -8,7 +8,7 @@ import java.util.TimeZone;
  */
 public class TestLocale {
     public static void setDefault() {
-//        Locale.setDefault(Locale.of("pt", "BR"));
-        TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
+        Locale.setDefault(Locale.of("pt", "BR"));
+//        TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
     }
 }

@@ -9,7 +9,7 @@ import java.util.Optional;
 public class WebUtils {
 
     private WebUtils(){
-        throw new IllegalStateException("Utility class");
+
     }
 
     public static <T> ResponseEntity<T> errorResponse(HttpStatus httpStatus, String detail) {

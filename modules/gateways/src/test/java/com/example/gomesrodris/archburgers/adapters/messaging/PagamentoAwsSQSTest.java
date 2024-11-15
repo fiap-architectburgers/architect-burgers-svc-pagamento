@@ -29,7 +29,8 @@ public class PagamentoAwsSQSTest {
     void notificarStatusPagamento() {
 
         Integer idPedido = 1;
-        IdFormaPagamento formaPagamento = IdFormaPagamento.MERCADO_PAGO;
+//        IdFormaPagamento formaPagamento = IdFormaPagamento.MERCADO_PAGO;
+        IdFormaPagamento formaPagamento = new IdFormaPagamento("MERCADO_PAGO");
         ValorMonetario valor = new ValorMonetario("100");
         LocalDateTime dataHora = LocalDateTime.now();
         String codigoPagamentoCliente = "12345";
@@ -41,7 +42,7 @@ public class PagamentoAwsSQSTest {
         when(awsSQSApi.getPagamentosConcluidosQueueUrl()).thenReturn("http://localhostxxx:8080");
 
         pagamentoAwsSQS.notificarStatusPagamento(pagamento);
-        System.out.println(pagamento.toString());
+        System.out.println(pagamento.getPagamentoJson().toString());
         verify(awsSQSApi).sendMessage(any(), any(), eq(pagamento.getPagamentoJson()));
 
     }

@@ -1,6 +1,5 @@
 package com.example.gomesrodris.archburgers;
 
-import com.example.gomesrodris.archburgers.tools.migration.DatabaseMigration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -18,12 +17,6 @@ public class ArchitectBurgersApiApplication {
 	@EventListener(ApplicationReadyEvent.class)
 	public void onAppStart(ApplicationReadyEvent applicationReadyEvent) {
 
-		DatabaseMigration databaseMigration = applicationReadyEvent.getApplicationContext().getBean(DatabaseMigration.class);
-        try {
-            databaseMigration.runMigrations();
-        } catch (Exception e) {
-            throw new RuntimeException("Error running DB migration on app startup: " + e, e);
-        }
     }
 
 }

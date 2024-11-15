@@ -16,10 +16,12 @@
     </properties>
 
     <modules>
+
         <module>modules/entities</module>
         <module>modules/usecases</module>
         <module>modules/gateways</module>
 	    <module>modules/web-app</module>
+        <module>modules/QA</module>
     </modules>
 
     <dependencies>
@@ -226,8 +228,8 @@
                                         <limit>
                                             <counter>COMPLEXITY</counter>
                                             <value>COVEREDRATIO</value>
-                                            <!-- 70% coverage is expected -->
-                                            <minimum>0.7</minimum>
+                                            <!-- 80% coverage is expected -->
+                                            <minimum>0.8</minimum>
                                         </limit>
                                     </limits>
                                 </rule>

@@ -60,6 +60,7 @@ public class AwsSQSApi {
                     .build();
             sqsClient.sendMessage(sendMsgRequest);
 
+            LOGGER.info("Body - " + message);
             LOGGER.info("Message sent successfully!");
 
         } catch (SqsException e) {

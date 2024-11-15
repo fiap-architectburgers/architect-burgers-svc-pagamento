@@ -56,9 +56,9 @@ public record Pagamento(
     public String getPagamentoJson(){
 
         JSONObject jo = new JSONObject();
-        jo.put("_id", this.id());
+        jo.put("id", this.id());
         jo.put("idPedido", this.idPedido());
-        jo.put("formaPagamento", this.formaPagamento().toString());
+        jo.put("formaPagamento", this.formaPagamento().codigo());
         jo.put("status", this.status().toString());
         jo.put("valor", this.valor().asBigDecimal().toString());
         jo.put("dataHoraCriacao", this.dataHoraCriacao().toString());

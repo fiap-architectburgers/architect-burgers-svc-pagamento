@@ -5,7 +5,6 @@ import com.example.gomesrodris.archburgers.domain.entities.Pagamento;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOptions;
@@ -42,7 +41,8 @@ public class PagamentoRepositoryNoSqlImpl implements PagamentoDataSource {
 
         MongoClientSettings settings = this.databaseConnection.getMongoClientSettings();
 
-        try (MongoClient mongoClient = MongoClients.create(settings)) {
+//        try (MongoClient mongoClient = MongoClients.create(settings)) {
+        try (MongoClient mongoClient = this.databaseConnection.getConnection()) {
             try {
 
                 MongoDatabase database = mongoClient.getDatabase(this.databaseConnection.getDatabase());
@@ -68,7 +68,8 @@ public class PagamentoRepositoryNoSqlImpl implements PagamentoDataSource {
 
         MongoClientSettings settings = this.databaseConnection.getMongoClientSettings();
 
-        try (MongoClient mongoClient = MongoClients.create(settings)) {
+//        try (MongoClient mongoClient = MongoClients.create(settings)) {
+        try (MongoClient mongoClient = this.databaseConnection.getConnection()) {
             try {
 
                 MongoDatabase database = mongoClient.getDatabase(this.databaseConnection.getDatabase());
@@ -76,27 +77,26 @@ public class PagamentoRepositoryNoSqlImpl implements PagamentoDataSource {
 
                 Document docPagamento = new Document();
 
+                System.out.println("FormaPagamento - " + pagamento.formaPagamento().toString());
+
                 docPagamento.append("_id", new ObjectId())
-                        .append("formaPagamento", pagamento.formaPagamento().toString())
+                        .append("formaPagamento", pagamento.formaPagamento().codigo().toString())
                         .append("idPedido", pagamento.idPedido())
 //                      .append("id", pagamento.id())
 //                      .append("formaPagamento", pagamento.formaPagamento().codigo())
                         .append("status", pagamento.status().toString())
                         .append("valor", pagamento.valor().asBigDecimal().toString())
                         .append("dataHoraCriacao", pagamento.dataHoraCriacao().toString())
-                        .append("dataHoraAtualizacao", pagamento.dataHoraAtualizacao().toString())
+                        .append("dataHoraAtualizacao", pagamento.dataHoraCriacao().toString())
                         .append("codigoPagamentoCliente", pagamento.codigoPagamentoCliente())
                         .append("idPedidoSistemaExterno", pagamento.idPedidoSistemaExterno());
 
-//                docPagamento.append("pagamento", docPagamento);
-
                 InsertOneResult result = collection.insertOne(docPagamento);
 
-                pagamento.withId(result.getInsertedId().asObjectId().toString());
+                Pagamento pagamentoSalvo = pagamento.withId(result.getInsertedId().asObjectId().toString());
 
-                mongoClient.close();
 
-                return pagamento;
+                return pagamentoSalvo;
             } catch (MongoException e) {
                 throw new RuntimeException("(" + this.getClass().getSimpleName() + ") Database error: " + e.getMessage(), e);
             }
@@ -108,7 +108,8 @@ public class PagamentoRepositoryNoSqlImpl implements PagamentoDataSource {
 
         MongoClientSettings settings = this.databaseConnection.getMongoClientSettings();
 
-        try (MongoClient mongoClient = MongoClients.create(settings)) {
+//        try (MongoClient mongoClient = MongoClients.create(settings)) {
+        try (MongoClient mongoClient = this.databaseConnection.getConnection()) {
             try {
 
                 MongoDatabase database = mongoClient.getDatabase(this.databaseConnection.getDatabase());
@@ -120,7 +121,7 @@ public class PagamentoRepositoryNoSqlImpl implements PagamentoDataSource {
 //                Document query = new Document().append("_id", pagamento.id());
                 Bson updates = Updates.combine(
                         Updates.set("status", pagamento.status().toString()),
-                        Updates.set("dataHoraAtualizacao", LocalDateTime.now()));
+                        Updates.set("dataHoraAtualizacao", pagamento.dataHoraAtualizacao().toString()));
 
                 UpdateOptions options = new UpdateOptions().upsert(true);
 
@@ -138,15 +139,16 @@ public class PagamentoRepositoryNoSqlImpl implements PagamentoDataSource {
     public void deletePagamentoByIdPedido(Integer idPedido) {
         MongoClientSettings settings = this.databaseConnection.getMongoClientSettings();
 
-        try (MongoClient mongoClient = MongoClients.create(settings)) {
+//        try (MongoClient mongoClient = MongoClients.create(settings)) {
+        try (MongoClient mongoClient = this.databaseConnection.getConnection()) {
             try {
 
                 MongoDatabase database = mongoClient.getDatabase(this.databaseConnection.getDatabase());
                 MongoCollection<Document> collection = database.getCollection("pagamentos");
 
                 Document query = new Document().append("idPedido", idPedido);
-                    DeleteResult result = collection.deleteOne(query);
-                    System.out.println("Deleted document count: " + result.getDeletedCount());
+                DeleteResult result = collection.deleteOne(query);
+                System.out.println("Deleted document count: " + result.getDeletedCount());
 
             } catch (MongoException e) {
                 throw new RuntimeException("(" + this.getClass().getSimpleName() + ") Database error: " + e.getMessage(), e);

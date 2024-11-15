@@ -63,7 +63,7 @@ public class MercadoPagoGatewayTest {
                 itens,
                 "Sem cebola",
                 StatusPedido.RECEBIDO,
-                formaPagamento,
+                formaPagamento.codigo(),
                 dataHoraPedido);
     }
 
@@ -74,7 +74,8 @@ public class MercadoPagoGatewayTest {
 
     @Test
     void validarId(){
-        assertThat(mercadoPagoGateway.id()).isEqualTo(IdFormaPagamento.valueOf("MERCADO_PAGO"));
+//        assertThat(mercadoPagoGateway.id()).isEqualTo(IdFormaPagamento.valueOf("MERCADO_PAGO"));
+        assertThat(mercadoPagoGateway.id().codigo()).isEqualTo(new IdFormaPagamento("MERCADO_PAGO").codigo());
     }
 
     @Test

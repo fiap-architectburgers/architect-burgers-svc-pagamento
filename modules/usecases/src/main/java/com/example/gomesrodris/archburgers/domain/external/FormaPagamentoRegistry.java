@@ -48,6 +48,11 @@ public class FormaPagamentoRegistry {
         return Collections.unmodifiableCollection(formasPagamento.values());
     }
 
+    public Map<IdFormaPagamento, FormaPagamento> getMapFormasDePagamento() {
+        return formasPagamento;
+    }
+
+
     private record FormaPagamentoInterna(IdFormaPagamento id, String descricao) implements FormaPagamento {
         @Override
             public boolean isIntegracaoExterna() {

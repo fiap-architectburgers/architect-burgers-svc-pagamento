@@ -8,8 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class WebUtilsTest {
@@ -36,5 +35,6 @@ class WebUtilsTest {
         assertNotNull(responseEntity.getBody());
         assertEquals(responseValue, responseEntity.getBody());
     }
+
 
 }

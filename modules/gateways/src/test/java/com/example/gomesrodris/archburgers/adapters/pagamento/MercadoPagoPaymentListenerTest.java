@@ -50,17 +50,6 @@ class MercadoPagoPaymentListenerTest {
         mercadoPagoPaymentListener = new MercadoPagoPaymentListener(mercadoPagoApi, pagamentoController);
     }
 
-//    @Test
-//    void notificarUpdate(){
-//
-//        HashMap<String, Object> map = new HashMap<>();
-//        map.put("order_status", "paid");
-//
-//        Mockito.when(mercadoPagoApi.getOrder(any(), any())).thenReturn(map);
-//
-//
-//        assertThat(mercadoPagoPaymentListener.notificarUpdate(null, null, null));
-//    }
 
     @Test
     public void testNotificarUpdate_MissingExternalReference() throws JsonProcessingException {

@@ -1,43 +1,49 @@
 package com.example.gomesrodris.archburgers.testUtils;
 
-import com.example.gomesrodris.archburgers.adapters.datasource.DatabaseConnection;
-import com.example.gomesrodris.archburgers.tools.migration.DatabaseMigration;
-import org.jetbrains.annotations.VisibleForTesting;
-import org.testcontainers.containers.PostgreSQLContainer;
+import com.example.gomesrodris.archburgers.adapters.datasource.MongoDatabaseConnection;
+import com.example.gomesrodris.archburgers.adapters.datasource.PagamentoRepositoryNoSqlImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.testcontainers.containers.MongoDBContainer;
 
 public class RealDatabaseTestHelper {
-    private PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
-            "postgres:12-alpine"
+
+    private static RealDatabaseTestHelper realDatabase;
+    private MongoDatabaseConnection mongoDatabaseConnection;
+
+    private PagamentoRepositoryNoSqlImpl repository;
+
+    private MongoDBContainer mongoDBContainer = new MongoDBContainer(
+            "mongo:latest"
     );
 
     public void beforeAll() throws Exception {
-        postgres.start();
+        mongoDBContainer.start();
 
-        new DatabaseMigration(postgres.getDriverClassName(),
-                postgres.getJdbcUrl(), postgres.getUsername(), postgres.getPassword()).runMigrations();
     }
 
     public void afterAll() {
-        postgres.stop();
+        mongoDBContainer.stop();
     }
 
-    public DatabaseConnection getConnectionPool() {
-        return new DatabaseConnection(postgres.getDriverClassName(),
-                postgres.getJdbcUrl(), postgres.getUsername(), postgres.getPassword());
+    public MongoDatabaseConnection getConnection() {
+        return new MongoDatabaseConnection(getConnectionString(), "pagamentos");
     }
 
-    @VisibleForTesting
-    public String getJdbcUrl() {
-        return postgres.getJdbcUrl();
+    @BeforeEach
+    void setUp() {
+        mongoDatabaseConnection = realDatabase.getConnection();
+        repository = new PagamentoRepositoryNoSqlImpl(mongoDatabaseConnection);
     }
 
-    @VisibleForTesting
-    public String getJdbcUsername() {
-        return postgres.getUsername();
+    public void start() {
+        mongoDBContainer.start();
     }
 
-    @VisibleForTesting
-    public String getJdbcPassword() {
-        return postgres.getPassword();
+    public void stop() {
+        mongoDBContainer.stop();
+    }
+
+    public String getConnectionString() {
+        return mongoDBContainer.getReplicaSetUrl("pagamentos");
     }
 }

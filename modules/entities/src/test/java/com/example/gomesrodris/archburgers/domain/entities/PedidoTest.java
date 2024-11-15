@@ -42,7 +42,7 @@ class PedidoTest {
                 itens,
                 "Sem cebola",
                 StatusPedido.RECEBIDO,
-                formaPagamento,
+                formaPagamento.codigo(),
                 dataHoraPedido);
     }
 
@@ -52,7 +52,7 @@ class PedidoTest {
         assertThat(pedido.idClienteIdentificado()).isEqualTo(new IdCliente(1));
         assertThat(pedido.itens().size()).isEqualTo(2);
         assertThat(pedido.status()).isEqualTo(StatusPedido.RECEBIDO);
-        assertThat(pedido.formaPagamento()).isEqualTo(formaPagamento);
+        assertThat(pedido.formaPagamento()).isEqualTo(formaPagamento.codigo());
         assertThat(pedido.dataHoraPedido()).isEqualTo(dataHoraPedido);
     }
 
@@ -84,20 +84,20 @@ class PedidoTest {
                 itens,
                 "Sem cebola",
                 StatusPedido.RECEBIDO,
-                pagamento,
+                pagamento.toString(),
                 dataHora);
 
         assertThat(ped.id()).isEqualTo(11);
         assertThat(ped.idClienteIdentificado()).isNull();
         assertThat(ped.itens().size()).isEqualTo(2);
         assertThat(ped.status()).isEqualTo(StatusPedido.RECEBIDO);
-        assertThat(ped.formaPagamento()).isEqualTo(formaPagamento);
+        assertThat(ped.formaPagamento().toString()).isEqualTo(formaPagamento.toString());
         assertThat(ped.dataHoraPedido()).isEqualTo(dataHora);
     }
 
     @Test
     void testGetValorTotalSemItens() {
-        Pedido pedido = new Pedido(null, null, null, Collections.emptyList(), null, StatusPedido.PAGAMENTO, IdFormaPagamento.CARTAO_MAQUINA, LocalDateTime.now());
+        Pedido pedido = new Pedido(null, null, null, Collections.emptyList(), null, StatusPedido.PAGAMENTO, IdFormaPagamento.CARTAO_MAQUINA.toString(), LocalDateTime.now());
         assertEquals(ValorMonetario.ZERO, pedido.getValorTotal());
     }
 

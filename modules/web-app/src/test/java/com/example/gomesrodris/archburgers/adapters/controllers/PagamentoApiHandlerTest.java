@@ -3,9 +3,12 @@ package com.example.gomesrodris.archburgers.adapters.controllers;
 import com.example.gomesrodris.archburgers.adapters.datasource.TransactionManager;
 import com.example.gomesrodris.archburgers.adapters.dto.ConfirmacaoPagamentoDto;
 import com.example.gomesrodris.archburgers.adapters.dto.PagamentoDto;
+import com.example.gomesrodris.archburgers.adapters.presenters.PagamentoPresenter;
 import com.example.gomesrodris.archburgers.adapters.presenters.QrCodePresenter;
+import com.example.gomesrodris.archburgers.apiutils.WebUtils;
 import com.example.gomesrodris.archburgers.controller.PagamentoController;
 import com.example.gomesrodris.archburgers.domain.entities.Pagamento;
+import com.example.gomesrodris.archburgers.domain.exception.DomainArgumentException;
 import com.example.gomesrodris.archburgers.domain.usecaseparam.DescricaoFormaPagamento;
 import com.example.gomesrodris.archburgers.domain.valueobjects.IdFormaPagamento;
 import com.example.gomesrodris.archburgers.domain.valueobjects.StatusPagamento;
@@ -14,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +28,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -83,6 +88,7 @@ class PagamentoApiHandlerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
+
     @Test
     public void testConsultarPagamento_Sucesso() throws Exception {
 
@@ -107,8 +113,8 @@ class PagamentoApiHandlerTest {
 
         PagamentoDto pagamentoResponse = response.getBody();
 
-        assertEquals(233, pagamentoResponse.id());
-        assertEquals(IdFormaPagamento.CARTAO_MAQUINA.toString(), pagamentoResponse.formaPagamento());
+        assertEquals("233", pagamentoResponse.id());
+        assertEquals(IdFormaPagamento.CARTAO_MAQUINA.codigo().toString(), pagamentoResponse.formaPagamento());
         assertEquals(idPedido, pagamentoResponse.idPedido());
         assertEquals(dataHoraEmMilissegundos, pagamentoResponse.dataHoraCriacao());
         assertEquals(dataHoraEmMilissegundos, pagamentoResponse.dataHoraAtualizacao());
@@ -117,14 +123,68 @@ class PagamentoApiHandlerTest {
         assertEquals(StatusPagamento.FINALIZADO.toString(), pagamentoResponse.status());
     }
 
+
     @Test
     public void testConsultarPagamento_IdNull() throws Exception {
-
         // Act
         ResponseEntity<PagamentoDto> response = pagamentoApiHandler.consultarPagamento(null);
-
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
+
+    @Test
+    public void consultarPagamentoPedidoInValido(){
+
+        Mockito.when(pagamentoController.consultarPagamento(97)).thenReturn(null);
+        ResponseEntity<byte[]> response = pagamentoApiHandler.consultarPagamentoQrCode("97");
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void consultarPagamentoPedidoSemCodigoPagamentoCliente(){
+
+        Integer idPedido = 1;
+        IdFormaPagamento formaPagamento = IdFormaPagamento.CARTAO_MAQUINA;
+        ValorMonetario valor = new ValorMonetario("100");
+        LocalDateTime dataHora = LocalDateTime.now();
+        long dataHoraEmMilissegundos = dataHora.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+        String codigoPagamentoCliente = "";
+        String idPedidoSistemaExterno = "123";
+        Pagamento pagamento = new Pagamento("233", idPedido, formaPagamento, StatusPagamento.FINALIZADO, valor, dataHora, dataHora, codigoPagamentoCliente, idPedidoSistemaExterno);
+
+
+        Mockito.when(pagamentoController.consultarPagamento(97)).thenReturn(pagamento);
+        ResponseEntity<byte[]> response = pagamentoApiHandler.consultarPagamentoQrCode("97");
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void consultarPagamentoPedidoComCodigoPagamentoClienteInvalido(){
+
+        Integer idPedido = 1;
+        IdFormaPagamento formaPagamento = IdFormaPagamento.CARTAO_MAQUINA;
+        ValorMonetario valor = new ValorMonetario("100");
+        LocalDateTime dataHora = LocalDateTime.now();
+        long dataHoraEmMilissegundos = dataHora.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+        String codigoPagamentoCliente = null;
+        String idPedidoSistemaExterno = "123";
+        Pagamento pagamento = new Pagamento("233", idPedido, formaPagamento, StatusPagamento.FINALIZADO, valor, dataHora, dataHora, codigoPagamentoCliente, idPedidoSistemaExterno);
+
+
+        Mockito.when(pagamentoController.consultarPagamento(97)).thenReturn(pagamento);
+        ResponseEntity<byte[]> response = pagamentoApiHandler.consultarPagamentoQrCode("97");
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void testConsultarQrCode_Invalido(){
+
+        Mockito.when(pagamentoController.consultarPagamento(97)).thenReturn(null);
+        ResponseEntity<PagamentoDto> response = pagamentoApiHandler.consultarPagamento("97");
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
 
     @Test
     public void testConsultarQrCode_Sucesso() throws Exception {

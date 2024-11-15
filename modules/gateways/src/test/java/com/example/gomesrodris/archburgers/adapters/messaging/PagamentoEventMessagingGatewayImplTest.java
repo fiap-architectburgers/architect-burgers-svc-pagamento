@@ -30,7 +30,8 @@ public class PagamentoEventMessagingGatewayImplTest {
     void notificarStatusPagamento() {
 
         Integer idPedido = 1;
-        IdFormaPagamento formaPagamento = IdFormaPagamento.MERCADO_PAGO;
+//        IdFormaPagamento formaPagamento = IdFormaPagamento.MERCADO_PAGO;
+        IdFormaPagamento formaPagamento = new IdFormaPagamento("MERCADO_PAGO");
         ValorMonetario valor = new ValorMonetario("100");
         LocalDateTime dataHora = LocalDateTime.now();
         String codigoPagamentoCliente = "12345";

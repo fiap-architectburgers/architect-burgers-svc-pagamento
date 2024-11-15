@@ -17,7 +17,7 @@ public record Pedido(
         @NotNull List<ItemPedido> itens,
         @Nullable String observacoes,
         @NotNull StatusPedido status,
-        @NotNull IdFormaPagamento formaPagamento,
+        @NotNull String formaPagamento,
         @NotNull LocalDateTime dataHoraPedido
 ) {
 

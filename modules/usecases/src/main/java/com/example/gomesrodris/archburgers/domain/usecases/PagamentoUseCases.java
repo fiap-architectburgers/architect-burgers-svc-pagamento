@@ -15,6 +15,7 @@ import com.example.gomesrodris.archburgers.domain.valueobjects.IdFormaPagamento;
 import com.example.gomesrodris.archburgers.domain.valueobjects.StatusPagamento;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,13 +37,24 @@ public class PagamentoUseCases {
     }
 
     public IdFormaPagamento validarFormaPagamento(String idFormaPagamento) throws DomainArgumentException {
-//        var formaPagamento = formaPagamentoRegistry.getFormaPagamento(new IdFormaPagamento(idFormaPagamento));
-        var formaPagamento = formaPagamentoRegistry.getFormaPagamento(IdFormaPagamento.valueOf(idFormaPagamento));
+        var formaPagamento = formaPagamentoRegistry.getFormaPagamento(new IdFormaPagamento(idFormaPagamento));
+//        var formaPagamento = formaPagamentoRegistry.getFormaPagamento(IdFormaPagamento.valueOf(idFormaPagamento));
         return formaPagamento.id();
     }
 
     public Pagamento iniciarPagamento(Pedido pedido) {
-        var formaPagamento = formaPagamentoRegistry.getFormaPagamento(pedido.formaPagamento());
+//        var formaPagamento = formaPagamentoRegistry.getFormaPagamento(pedido.formaPagamento());
+
+        FormaPagamento formaPagamento = formaPagamentoRegistry.getMapFormasDePagamento().get(new IdFormaPagamento(pedido.formaPagamento()));
+
+//        Collection<FormaPagamento> listFormasPagamento = formaPagamentoRegistry.listAll();
+//
+//        FormaPagamento formaPagamentoEncontrada = listFormasPagamento.stream()
+//                .filter(formaPagamento -> formaPagamento.id().equals(pedido.formaPagamento()))
+//                .findFirst()
+//                .orElse(null);
+
+
 
         FormaPagamento.InfoPagamentoExterno infoPagamentoExterno;
         if (formaPagamento.isIntegracaoExterna()) {
