@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.example.fiap-architect-burgers</groupId>
+        <artifactId>svc-pagamento-parent</artifactId>
+        <version>${projectVersion}</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>svc-pagamento-QA-tools</artifactId>
+    <version>${projectVersion}</version>
+
+    <name>svc-pagamento-QA-tools</name>
+    <description>Architect Burger - Pagamento microservice QA Tools</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>svc-pagamento-webapi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <version>1.11.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>7.20.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <version>7.20.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>5.5.0</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.45.1</version>
+                <executions>
+                    <execution>
+                        <id>prepare-IT-database</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <name>mongo:latest</name>
+                                    <alias>database</alias>
+                                    <run>
+                                        <ports>
+                                            <port>27034:27034</port>
+                                        </ports>
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>remove-IT-database</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>pre-integration-test</id>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                        <configuration>
+                            <skip>false</skip>
+                            <mainClass>com.example.gomesrodris.archburgers.ArchitectBurgersApiApplication</mainClass>
+
+                            <environmentVariables>
+                                <archburgers.datasource-mongodb.uri>mongodb://localhost:27034/pagamentos</archburgers.datasource-mongodb.uri>
+                                <archburgers.datasource-mongodb.database>pagamentos</archburgers.datasource-mongodb.database>
+                                <archburgers.integration.sqs.sqsEndpoint>http://localhost:4566</archburgers.integration.sqs.sqsEndpoint>
+                                <archburgers.integration.sqs.pagamentosEmAbertoQueueName>pagamentosEmAberto</archburgers.integration.sqs.pagamentosEmAbertoQueueName>
+                                <archburgers.integration.sqs.pagamentosEmAbertoQueueUrl>http://localhost:4566/000000000000/pagamentosEmAberto</archburgers.integration.sqs.pagamentosEmAbertoQueueUrl>
+                                <archburgers.integration.sqs.pagamentosConcluidosQueueName>pagamentos_concluidos></archburgers.integration.sqs.pagamentosConcluidosQueueName>
+                                <archburgers.integration.sqs.pagamentosConcluidosQueueUrl>http://localhost:4566/000000000000/pagamentos_concluidos</archburgers.integration.sqs.pagamentosConcluidosQueueUrl>
+                                <archburgers.integration.mercadopago.apiBaseUrl>https://api.mercadopago.com</archburgers.integration.mercadopago.apiBaseUrl>
+                                <archburgers.integration.mercadopago.userId>1895399971</archburgers.integration.mercadopago.userId>
+                                <archburgers.integration.mercadopago.accessToken>APP_USR-6161516574031164-103017-1c7be4086063df7ad02ac53ed4e0b2bc-1895399971</archburgers.integration.mercadopago.accessToken>
+                                <archburgers.integration.mercadopago.posId>LOJA1POS1</archburgers.integration.mercadopago.posId>
+                                <archburgers.integration.mercadopago.notificationUrl>https://webhook.site/77a8bde9-a0f8-4a07-91c1-3cd71def2d89</archburgers.integration.mercadopago.notificationUrl>
+                                <!--     <archburgers.datasource-mongodb.uri>mongodb+srv://fiapdbuser:fiapdbuser@techchallengecluster.hp7nh.mongodb.net/?retryWrites=true&w=majority&appName=techchallengecluster</archburgers.datasource-mongodb.uri>
+                                     <archburgers.datasource-mongodb.database>techchallengedb</archburgers.datasource-mongodb.database> -->
+                                 </environmentVariables>
+                             </configuration>
+                         </execution>
+
+                         <execution>
+                             <id>post-integration-test</id>
+                             <goals>
+                                 <goal>stop</goal>
+                             </goals>
+                             <configuration>
+                                 <skip>false</skip>
+                             </configuration>
+                         </execution>
+                     </executions>
+                 </plugin>
+             </plugins>
+         </build>
+     </project>
