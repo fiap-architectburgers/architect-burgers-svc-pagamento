@@ -15,7 +15,14 @@
 
     <name>svc-pagamento-usecases</name>
     <description>Architect Burger - Pagamento Microservices Use Cases layer</description>
-
+   <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>svc-pagamento-entities</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
+	<!--
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -58,5 +65,5 @@
             <version>2.1.1</version>
             <scope>compile</scope>
         </dependency>
-    </dependencies>
+    </dependencies> -->
 </project>
