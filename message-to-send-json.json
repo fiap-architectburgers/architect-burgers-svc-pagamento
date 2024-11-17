@@ -4,7 +4,7 @@ cd '.\Program Files\PostgreSQL\16\bin\'
 
 select * from pagamento;
 
-
+.
 
 aws sqs create-queue --queue-name pagamentosEmAberto
 aws sqs create-queue --queue-name pagamentos_concluidos
