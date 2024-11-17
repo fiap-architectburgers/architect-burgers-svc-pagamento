@@ -15,6 +15,7 @@
 
     <name>svc-pagamento-usecases</name>
     <description>Architect Burger - Pagamento Microservices Use Cases layer</description>
+	
    <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
