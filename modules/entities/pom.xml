@@ -7,7 +7,7 @@
         <groupId>com.example.fiap-architect-burgers</groupId>
         <artifactId>svc-pagamento-parent</artifactId>
         <version>${projectVersion}</version>
-	    <relativePath>../../pom.xml</relativePath>
+	<relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>svc-pagamento-entities</artifactId>
