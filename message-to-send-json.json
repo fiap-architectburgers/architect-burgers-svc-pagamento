@@ -3,7 +3,7 @@ cd '.\Program Files\PostgreSQL\16\bin\'
 .\psql.exe -U postgres archburgers_svc_pagamento
 
 select * from pagamento;
-
+.
 
 
 aws sqs create-queue --queue-name pagamentosEmAberto
