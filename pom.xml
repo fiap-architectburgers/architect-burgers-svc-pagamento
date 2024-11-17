@@ -73,7 +73,7 @@
     <dependencyManagement>
         <dependencies>
             <!-- Be careful to match the spring core version with the one included in Spring Boot -->
-            <dependency>
+           <!--  <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
                 <version>6.1.5</version>
@@ -82,6 +82,28 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>6.1.5</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${deps.spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${deps.spring.boot.version}</version>
+            </dependency> -->
+
+	    <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${deps.spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${deps.spring.version}</version>
             </dependency>
 
             <dependency>
