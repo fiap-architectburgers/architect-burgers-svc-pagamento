@@ -29,12 +29,14 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>svc-pagamento-usecases</artifactId>
-            <version>${parent.version}</version>
+            <!-- <version>${parent.version}</version> -->
+	    <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>svc-pagamento-gateways</artifactId>
-            <version>${parent.version}</version>
+            <!-- <version>${parent.version}</version> -->
+	    <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
