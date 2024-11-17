@@ -11,7 +11,8 @@
     </parent>
 
     <artifactId>svc-pagamento-entities</artifactId>
-    <version>${project.parent.version}</version>
+    <!-- <version>${project.parent.version}</version> -->
+    <version>${projectVersion}</version>
 
     <name>svc-pagamento-entities</name>
     <description>Architect Burger - Pagamento microservice Entities layer</description>
