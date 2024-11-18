@@ -3,7 +3,7 @@ run-name: Package and deploy application
 on:
   push:
     branches:
-      - xxxx
+      - main
 
 jobs:
   mvn-install-with-libs:
