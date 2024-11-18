@@ -84,9 +84,6 @@ jobs:
 
       - name: Verify EKS cluster
         run: ./deploy/utils/check-cluster-status.sh ${{vars.EKS_CLUSTER_NAME}}
-      - name: Get database URL
-        id: get-db-url
-        run: ./deploy/utils/get-database-url.sh ${{vars.DB_INSTANCE_IDENTIFIER}} >> $GITHUB_OUTPUT
       - name: Get API Gateway info
         id: get-apigw-info
         run: ./deploy/utils/get-external-api-info.sh ${{vars.API_GATEWAY_NAME}} >> $GITHUB_OUTPUT
@@ -111,6 +108,11 @@ jobs:
              | sed "s/{ACCESS_KEY_ID}/$(echo -n '${{secrets.AWS_ACCESS_KEY_ID}}' | tr -d '\n')/" \
              | sed "s|{SECRET_ACCESS_KEY}|$(echo -n '${{secrets.AWS_SECRET_ACCESS_KEY}}' | tr -d '\n')|" \
              | sed "s|{SESSION_TOKEN}|$(echo -n '${{secrets.AWS_SESSION_TOKEN}}' | tr -d '\n')|" \
+             | sed "s|{PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}|$(echo -n '${{vars.PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}}' | tr -d '\n')|" \
+             | sed "s|{PAGAMENTOS_CONCLUIDOS_QUEUE_URL}|$(echo -n '${{vars.PAGAMENTOS_CONCLUIDOS_QUEUE_URL}}' | tr -d '\n')|" \
+             | sed "s|{PAGAMENTOS_EM_ABERTO_QUEUE_NAME}|$(echo -n '${{vars.PAGAMENTOS_EM_ABERTO_QUEUE_NAME}}' | tr -d '\n')|" \
+             | sed "s|{PAGAMENTOS_EM_ABERTO_QUEUE_URL}|$(echo -n '${{vars.PAGAMENTOS_EM_ABERTO_QUEUE_URL}}' | tr -d '\n')|" \
+             | sed "s|{SQS_ENDPOINT}|$(echo -n '${{vars.SQS_ENDPOINT}}' | tr -d '\n')|" \
              | sed "s/{REGION}/us-east-1/" > ./kube-aws-configs.yml
 
       - name: Update image in App Deployment
