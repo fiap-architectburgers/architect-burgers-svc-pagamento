@@ -87,20 +87,20 @@ spec:
                   name: "archburgers-aws-config"
                   key: "archburgers.integration.sqs.pagamentosEmAbertoQueueUrl"
             - name: "archburgers.integration.sqs.pagamentosConcluidosQueueName"
-                valueFrom:
-                  configMapKeyRef:
-                    name: "archburgers-aws-config"
-                    key: "archburgers.integration.sqs.pagamentosConcluidosQueueName"
+              valueFrom:
+                configMapKeyRef:
+                  name: "archburgers-aws-config"
+                  key: "archburgers.integration.sqs.pagamentosConcluidosQueueName"
             - name: "archburgers.integration.sqs.pagamentosConcluidosQueueUrl"
-                valueFrom:
-                  configMapKeyRef:
-                    name: "archburgers-aws-config"
-                    key: "archburgers.integration.sqs.pagamentosConcluidosQueueUrl"
+              valueFrom:
+                configMapKeyRef:
+                  name: "archburgers-aws-config"
+                  key: "archburgers.integration.sqs.pagamentosConcluidosQueueUrl"
             - name: "archburgers.integration.sqs.sqsEndpoint"
-                valueFrom:
-                  configMapKeyRef:
-                    name: "archburgers-aws-config"
-                    key: "archburgers.integration.sqs.sqsEndpoint"
+              valueFrom:
+                configMapKeyRef:
+                  name: "archburgers-aws-config"
+                  key: "archburgers.integration.sqs.sqsEndpoint"
 
             # Needs to be passed via env var - Pod cannot assume role in AwsAcademy
             - name: "AWS_ACCESS_KEY_ID"
