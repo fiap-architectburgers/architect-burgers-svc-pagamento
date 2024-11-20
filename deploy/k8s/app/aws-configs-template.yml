@@ -11,3 +11,4 @@ data:
   "archburgers.integration.sqs.pagamentosConcluidosQueueName": "{PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}"
   "archburgers.integration.sqs.pagamentosConcluidosQueueUrl": "{PAGAMENTOS_CONCLUIDOS_QUEUE_URL}"
   "archburgers.integration.sqs.sqsEndpoint": "{SQS_ENDPOINT}"
+  "archburgers.integration.aws.region": "{REGION}"
