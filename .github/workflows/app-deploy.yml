@@ -84,6 +84,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
 
+      - name: Create SQS Queue PAGAMENTOS_CONCLUIDOS
+        run: |
+          chmod +x ./deploy/utils/create-sqs-queue.sh
+          ./deploy/utils/create-sqs-queue.sh ${{vars.PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}}
+          echo "$?" >> output.txt
+          echo "::set-output name=PAGAMENTOS_CONCLUIDOS_QUEUE_URL::$(cat output.txt)"
+      
+      - name: Create SQS Queue PAGAMENTOS_EM_ABERTO
+        run: |
+          chmod +x ./deploy/utils/create-sqs-queue.sh
+          ./deploy/utils/create-sqs-queue.sh ${{vars.PAGAMENTOS_EM_ABERTO_QUEUE_NAME}} >> output.txt
+          echo "$?" >> output.txt
+          echo "::set-output name=PAGAMENTOS_EM_ABERTO_QUEUE_URL::$(cat output.txt)"
+
       - name: Verify EKS cluster
         run: |
           chmod +x ./deploy/utils/check-cluster-status.sh
@@ -115,9 +129,9 @@ jobs:
              | sed "s|{SECRET_ACCESS_KEY}|$(echo -n '${{secrets.AWS_SECRET_ACCESS_KEY}}' | tr -d '\n')|" \
              | sed "s|{SESSION_TOKEN}|$(echo -n '${{secrets.AWS_SESSION_TOKEN}}' | tr -d '\n')|" \
              | sed "s|{PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}|$(echo -n '${{vars.PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}}' | tr -d '\n')|" \
-             | sed "s|{PAGAMENTOS_CONCLUIDOS_QUEUE_URL}|$(echo -n '${{vars.PAGAMENTOS_CONCLUIDOS_QUEUE_URL}}' | tr -d '\n')|" \
+             | sed "s|{PAGAMENTOS_CONCLUIDOS_QUEUE_URL}|$(echo -n '${{PAGAMENTOS_CONCLUIDOS_QUEUE_URL}}' | tr -d '\n')|" \
              | sed "s|{PAGAMENTOS_EM_ABERTO_QUEUE_NAME}|$(echo -n '${{vars.PAGAMENTOS_EM_ABERTO_QUEUE_NAME}}' | tr -d '\n')|" \
-             | sed "s|{PAGAMENTOS_EM_ABERTO_QUEUE_URL}|$(echo -n '${{vars.PAGAMENTOS_EM_ABERTO_QUEUE_URL}}' | tr -d '\n')|" \
+             | sed "s|{PAGAMENTOS_EM_ABERTO_QUEUE_URL}|$(echo -n '${{PAGAMENTOS_EM_ABERTO_QUEUE_URL}}' | tr -d '\n')|" \
              | sed "s|{SQS_ENDPOINT}|$(echo -n '${{vars.SQS_ENDPOINT}}' | tr -d '\n')|" \
              | sed "s/{REGION}/us-east-1/" > ./kube-aws-configs.yml
 
