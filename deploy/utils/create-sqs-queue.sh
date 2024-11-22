@@ -28,4 +28,4 @@ if [ -z "$queue_url" ]; then
 fi
 
   # Imprime a URL da fila
-  echo "queue=$queue_url"
+  echo "QUEUE=$queue_url"
