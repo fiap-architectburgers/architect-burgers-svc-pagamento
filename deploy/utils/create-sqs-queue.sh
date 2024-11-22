@@ -27,5 +27,8 @@ if [ -z "$queue_url" ]; then
   fi
 fi
 
-  # Imprime a URL da fila
-  echo "QUEUE=$queue_url"
+endpoint=$(echo "$queue_url" | sed 's/\(https:\/\/.*aws\.com\).*/\1/')
+
+# Imprime a URL da fila
+echo "QUEUE=$queue_url"
+echo "SQS_ENDPOINT=$endpoint"
