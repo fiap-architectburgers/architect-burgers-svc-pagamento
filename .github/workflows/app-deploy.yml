@@ -109,7 +109,7 @@ jobs:
       - name: Prepare kubernetes files
         run: |
           cat ./deploy/k8s/db/db-configs-cloud-template.yml \
-             | sed "s|{DB_MONGODB_URI}|${{secrets.DB_MONGODB_URI}}|" \
+             | sed "s/{DB_MONGODB_URI}/${{secrets.DB_MONGODB_URI}}/" \
              | sed "s/{DB_MONGODB_DATABASE}/${{vars.DB_MONGODB_DATABASE}}/" > ./kube-db-configs.yml
 
       - name: Prepare MercadoPago configmap
@@ -122,14 +122,16 @@ jobs:
 
       - name: Prepare AWS
         run: |
+          echo ${{ steps.create-sqs-pag-em-aberto.outputs.QUEUE }}
+          echo ${{ steps.create-sqs-pag-concluidos.outputs.QUEUE }}
           cat ./deploy/k8s/app/aws-configs-template.yml \
              | sed "s/{ACCESS_KEY_ID}/$(echo -n '${{secrets.AWS_ACCESS_KEY_ID}}' | tr -d '\n')/" \
              | sed "s|{SECRET_ACCESS_KEY}|$(echo -n '${{secrets.AWS_SECRET_ACCESS_KEY}}' | tr -d '\n')|" \
              | sed "s|{SESSION_TOKEN}|$(echo -n '${{secrets.AWS_SESSION_TOKEN}}' | tr -d '\n')|" \
              | sed "s|{PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}|$(echo -n '${{vars.PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}}' | tr -d '\n')|" \
-             | sed "s|{PAGAMENTOS_CONCLUIDOS_QUEUE_URL}|$(echo -n '${{ steps.create-sqs-pag-concluidos.outputs.QUEUE }}' | tr -d '\n')|" \
              | sed "s|{PAGAMENTOS_EM_ABERTO_QUEUE_NAME}|$(echo -n '${{vars.PAGAMENTOS_EM_ABERTO_QUEUE_NAME}}' | tr -d '\n')|" \
-             | sed "s|{PAGAMENTOS_EM_ABERTO_QUEUE_URL}|$(echo -n '${{ steps.create-sqs-pag-em-aberto.outputs.QUEUE }}' | tr -d '\n')|" \
+             | sed "s|{PAGAMENTOS_CONCLUIDOS_QUEUE_URL}|${{ steps.create-sqs-pag-concluidos.outputs.QUEUE }}|" \
+             | sed "s|{PAGAMENTOS_EM_ABERTO_QUEUE_URL}|${{ steps.create-sqs-pag-em-aberto.outputs.QUEUE }}|" \
              | sed "s|{SQS_ENDPOINT}|$(echo -n '${{vars.SQS_ENDPOINT}}' | tr -d '\n')|" \
              | sed "s/{REGION}/us-east-1/" > ./kube-aws-configs.yml
 
