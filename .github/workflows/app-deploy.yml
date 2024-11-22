@@ -88,15 +88,13 @@ jobs:
         id: create-sqs-pag-concluidos
         run: |
           chmod +x ./deploy/utils/create-sqs-queue.sh
-          ./deploy/utils/create-sqs-queue.sh ${{vars.PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}}
-          echo "queue=$?" >> $GITHUB_OUTPUT
+          ./deploy/utils/create-sqs-queue.sh ${{vars.PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}}          
       
       - name: Create SQS Queue PAGAMENTOS_EM_ABERTO
         id: create-sqs-pag-em-aberto
         run: |
           chmod +x ./deploy/utils/create-sqs-queue.sh
-          ./deploy/utils/create-sqs-queue.sh ${{vars.PAGAMENTOS_EM_ABERTO_QUEUE_NAME}} >> output.txt
-          echo "queue=$?" >> $GITHUB_OUTPUT
+          ./deploy/utils/create-sqs-queue.sh ${{vars.PAGAMENTOS_EM_ABERTO_QUEUE_NAME}}          
 
       - name: Verify EKS cluster
         run: |
