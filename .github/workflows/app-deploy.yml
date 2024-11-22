@@ -85,18 +85,18 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
 
       - name: Create SQS Queue PAGAMENTOS_CONCLUIDOS
+        id: create-sqs-pag-concluidos
         run: |
           chmod +x ./deploy/utils/create-sqs-queue.sh
           ./deploy/utils/create-sqs-queue.sh ${{vars.PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}}
-          echo "$?" >> output.txt
-          echo "::set-output name=PAGAMENTOS_CONCLUIDOS_QUEUE_URL::$(cat output.txt)"
+          echo "queue=$?" >> $GITHUB_OUTPUT
       
       - name: Create SQS Queue PAGAMENTOS_EM_ABERTO
+        id: create-sqs-pag-em-aberto
         run: |
           chmod +x ./deploy/utils/create-sqs-queue.sh
           ./deploy/utils/create-sqs-queue.sh ${{vars.PAGAMENTOS_EM_ABERTO_QUEUE_NAME}} >> output.txt
-          echo "$?" >> output.txt
-          echo "::set-output name=PAGAMENTOS_EM_ABERTO_QUEUE_URL::$(cat output.txt)"
+          echo "queue=$?" >> $GITHUB_OUTPUT
 
       - name: Verify EKS cluster
         run: |
@@ -129,9 +129,9 @@ jobs:
              | sed "s|{SECRET_ACCESS_KEY}|$(echo -n '${{secrets.AWS_SECRET_ACCESS_KEY}}' | tr -d '\n')|" \
              | sed "s|{SESSION_TOKEN}|$(echo -n '${{secrets.AWS_SESSION_TOKEN}}' | tr -d '\n')|" \
              | sed "s|{PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}|$(echo -n '${{vars.PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}}' | tr -d '\n')|" \
-             | sed "s|{PAGAMENTOS_CONCLUIDOS_QUEUE_URL}|$(echo -n '${{ steps.prepare-k8s-aws-dependencies.outputs.PAGAMENTOS_CONCLUIDOS_QUEUE_URL }}' | tr -d '\n')|" \
+             | sed "s|{PAGAMENTOS_CONCLUIDOS_QUEUE_URL}|$(echo -n '${{ steps.create-sqs-pag-concluidos.outputs.queue }}' | tr -d '\n')|" \
              | sed "s|{PAGAMENTOS_EM_ABERTO_QUEUE_NAME}|$(echo -n '${{vars.PAGAMENTOS_EM_ABERTO_QUEUE_NAME}}' | tr -d '\n')|" \
-             | sed "s|{PAGAMENTOS_EM_ABERTO_QUEUE_URL}|$(echo -n '${{ steps.prepare-k8s-aws-dependencies.outputs.PAGAMENTOS_EM_ABERTO_QUEUE_URL }}' | tr -d '\n')|" \
+             | sed "s|{PAGAMENTOS_EM_ABERTO_QUEUE_URL}|$(echo -n '${{ steps.create-sqs-pag-em-aberto.outputs.queue }}' | tr -d '\n')|" \
              | sed "s|{SQS_ENDPOINT}|$(echo -n '${{vars.SQS_ENDPOINT}}' | tr -d '\n')|" \
              | sed "s/{REGION}/us-east-1/" > ./kube-aws-configs.yml
 
