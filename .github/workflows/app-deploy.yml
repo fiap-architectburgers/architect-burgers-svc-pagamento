@@ -127,9 +127,9 @@ jobs:
              | sed "s|{SECRET_ACCESS_KEY}|$(echo -n '${{secrets.AWS_SECRET_ACCESS_KEY}}' | tr -d '\n')|" \
              | sed "s|{SESSION_TOKEN}|$(echo -n '${{secrets.AWS_SESSION_TOKEN}}' | tr -d '\n')|" \
              | sed "s|{PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}|$(echo -n '${{vars.PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}}' | tr -d '\n')|" \
-             | sed "s|{PAGAMENTOS_CONCLUIDOS_QUEUE_URL}|$(echo -n '${{ steps.create-sqs-pag-concluidos.outputs.queue }}' | tr -d '\n')|" \
+             | sed "s|{PAGAMENTOS_CONCLUIDOS_QUEUE_URL}|$(echo -n '${{ steps.create-sqs-pag-concluidos.outputs.QUEUE }}' | tr -d '\n')|" \
              | sed "s|{PAGAMENTOS_EM_ABERTO_QUEUE_NAME}|$(echo -n '${{vars.PAGAMENTOS_EM_ABERTO_QUEUE_NAME}}' | tr -d '\n')|" \
-             | sed "s|{PAGAMENTOS_EM_ABERTO_QUEUE_URL}|$(echo -n '${{ steps.create-sqs-pag-em-aberto.outputs.queue }}' | tr -d '\n')|" \
+             | sed "s|{PAGAMENTOS_EM_ABERTO_QUEUE_URL}|$(echo -n '${{ steps.create-sqs-pag-em-aberto.outputs.QUEUE }}' | tr -d '\n')|" \
              | sed "s|{SQS_ENDPOINT}|$(echo -n '${{vars.SQS_ENDPOINT}}' | tr -d '\n')|" \
              | sed "s/{REGION}/us-east-1/" > ./kube-aws-configs.yml
 
