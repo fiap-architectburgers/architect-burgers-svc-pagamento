@@ -103,26 +103,6 @@ spec:
                 configMapKeyRef:
                   name: "archburgers-aws-config"
                   key: "archburgers.integration.aws.AWS_SESSION_TOKEN"
-
-          readinessProbe:
-            httpGet:
-              port: 8090
-              path: /healthcheck
-            initialDelaySeconds: 20
-            periodSeconds: 10
-            timeoutSeconds: 3
-            failureThreshold: 1
-          livenessProbe:
-            httpGet:
-              port: 8090
-              path: /healthcheck
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 3
-            # https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
-            # A common pattern for liveness probes is to use the same low-cost HTTP endpoint as for readiness probes,
-            # but with a higher failureThreshold
-            failureThreshold: 5
           resources:
             requests:
               cpu: 250m
