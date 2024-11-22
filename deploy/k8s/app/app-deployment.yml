@@ -61,21 +61,6 @@ spec:
                 configMapKeyRef:
                   name: "archburgers-aws-config"
                   key: "archburgers.integration.aws.region"
-            - name: "archburgers.integration.cognito.userPoolId"
-              valueFrom:
-                configMapKeyRef:
-                  name: "archburgers-aws-config"
-                  key: "archburgers.integration.cognito.userPoolId"
-            - name: "archburgers.integration.cognito.clientId"
-              valueFrom:
-                configMapKeyRef:
-                  name: "archburgers-aws-config"
-                  key: "archburgers.integration.cognito.clientId"
-            - name: "archburgers.integration.cognito.clientSecret"
-              valueFrom:
-                configMapKeyRef:
-                  name: "archburgers-aws-config"
-                  key: "archburgers.integration.cognito.clientSecret"
             - name: "archburgers.integration.sqs.pagamentosEmAbertoQueueName"
               valueFrom:
                 configMapKeyRef:
