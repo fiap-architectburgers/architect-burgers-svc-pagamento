@@ -96,7 +96,7 @@ then
 fi
 
 cat ./k8s/app/app-deployment.yml \
-  | sed "s|image: .*architect-burgers.*$|image: $APP_IMAGE|" > /tmp/deploy/app-deployment.yml
+  | sed "s|image: .*architect-burgers-pagamentos.*$|image: $APP_IMAGE|" > /tmp/deploy/app-deployment.yml
 
 aws eks update-kubeconfig --name ${EKS_CLUSTER_NAME}
 
