@@ -136,7 +136,7 @@ jobs:
       - name: Update image in App Deployment
         run: |
           cat ./deploy/k8s/app/app-deployment.yml \
-            | sed "s|image: .*architect-burgers.*$|image: ${{ vars.DOCKERHUB_USERNAME }}/architect-burgers:${{env.PROJECT_VERSION}}|" > ./kube-app-deployment-updated.yml
+            | sed "s|image: .*architect-burgers-pagamentos.*$|image: ${{ vars.DOCKERHUB_USERNAME }}/architect-burgers-pagamentos:${{env.PROJECT_VERSION}}|" > ./kube-app-deployment-updated.yml
 
       - name: Upload kube artifacts
         uses: actions/upload-artifact@v4
