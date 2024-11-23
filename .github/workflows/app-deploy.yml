@@ -87,25 +87,18 @@ jobs:
 
       - name: Create SQS Queue PAGAMENTOS_CONCLUIDOS
         id: create-sqs-pag-concluidos
-        run: |
-          chmod +x ./deploy/utils/create-sqs-queue.sh
-          ./deploy/utils/create-sqs-queue.sh ${{vars.PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}} >> $GITHUB_OUTPUT
+        run: ./deploy/utils/create-sqs-queue.sh ${{vars.PAGAMENTOS_CONCLUIDOS_QUEUE_NAME}} >> $GITHUB_OUTPUT
       
       - name: Create SQS Queue PAGAMENTOS_EM_ABERTO
         id: create-sqs-pag-em-aberto
-        run: |
-          chmod +x ./deploy/utils/create-sqs-queue.sh
-          ./deploy/utils/create-sqs-queue.sh ${{vars.PAGAMENTOS_EM_ABERTO_QUEUE_NAME}} >> $GITHUB_OUTPUT
+        run: ./deploy/utils/create-sqs-queue.sh ${{vars.PAGAMENTOS_EM_ABERTO_QUEUE_NAME}} >> $GITHUB_OUTPUT
 
       - name: Verify EKS cluster
-        run: |
-          chmod +x ./deploy/utils/check-cluster-status.sh
-          ./deploy/utils/check-cluster-status.sh ${{vars.EKS_CLUSTER_NAME}}
+        run: ./deploy/utils/check-cluster-status.sh ${{vars.EKS_CLUSTER_NAME}}
+
       - name: Get API Gateway info
         id: get-apigw-info
-        run: |
-          chmod +x ./deploy/utils/get-external-api-info.sh
-          ./deploy/utils/get-external-api-info.sh ${{vars.API_GATEWAY_NAME}} >> $GITHUB_OUTPUT
+        run: ./deploy/utils/get-external-api-info.sh ${{vars.API_GATEWAY_NAME}} >> $GITHUB_OUTPUT
 
       - name: Prepare kubernetes files
         run: |

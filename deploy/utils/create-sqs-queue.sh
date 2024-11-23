@@ -15,7 +15,7 @@ queue_url=$(aws sqs get-queue-url --queue-name "$queue_name" --query QueueUrl --
 # Verifica se a fila existe
 if [ -z "$queue_url" ]; then
   # Comando para criar a fila
-  aws sqs create-queue --queue-name "$queue_name"
+  aws sqs create-queue --queue-name "$queue_name" >/dev/null
 
   # Obtém a URL da fila recém-criada
   queue_url=$(aws sqs get-queue-url --queue-name "$queue_name" --query QueueUrl --output text)
