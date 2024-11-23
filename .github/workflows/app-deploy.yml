@@ -174,6 +174,9 @@ jobs:
       - name: Create AWS-Services ConfigMap
         run: kubectl apply -f kube-aws-configs.yml
 
+      - name: Create App Internal service
+        run: kubectl apply -f deploy/k8s/app/app-service-internal.yml
+
       - name: Create App LoadBalancer service
         run: kubectl apply -f deploy/k8s/app/app-service-loadbalancer.yml
 
