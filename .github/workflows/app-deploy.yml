@@ -108,11 +108,9 @@ jobs:
 
       - name: Prepare kubernetes files
         run: |
-          echo ${{secrets.DB_MONGODB_URI}}
-          echo ${{secrets.DB_MONGODB_DATABASE}}
           cat ./deploy/k8s/db/db-configs-cloud-template.yml \
-             | sed "s|{DB_MONGODB_URI}/${{secrets.DB_MONGODB_URI}}/" \
-             | sed "s|{DB_MONGODB_DATABASE}/${{vars.DB_MONGODB_DATABASE}}/" > ./kube-db-configs.yml
+             | sed "s|{DB_MONGODB_URI}/${{secrets.DB_MONGODB_URI}}|" \
+             | sed "s|{DB_MONGODB_DATABASE}/${{vars.DB_MONGODB_DATABASE}}|" > ./kube-db-configs.yml
 
       - name: Prepare MercadoPago configmap
         run: |
