@@ -56,7 +56,7 @@ public class AwsSQSApi {
             SendMessageRequest sendMsgRequest = SendMessageRequest.builder()
                     .queueUrl(queueUrl)
                     .messageBody(message)
-                    .delaySeconds(1)
+                    .delaySeconds(0)
                     .build();
             sqsClient.sendMessage(sendMsgRequest);
 
