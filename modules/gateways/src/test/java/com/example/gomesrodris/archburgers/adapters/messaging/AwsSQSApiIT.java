@@ -85,7 +85,7 @@ public class AwsSQSApiIT {
 
         awsSQSApi.sendMessage("pagamentos_concluidos", pagamentosConcluidosQueueUrl, testMessage);
 
-        Thread.sleep(1100L);
+        Thread.sleep(1600L);
 
         try (SqsClient sqsClient = SqsClient.builder()
                 .region(Region.US_EAST_1)
