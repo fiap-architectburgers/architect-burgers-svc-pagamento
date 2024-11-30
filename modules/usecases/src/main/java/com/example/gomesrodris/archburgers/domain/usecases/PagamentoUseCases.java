@@ -43,18 +43,8 @@ public class PagamentoUseCases {
     }
 
     public Pagamento iniciarPagamento(Pedido pedido) {
-//        var formaPagamento = formaPagamentoRegistry.getFormaPagamento(pedido.formaPagamento());
 
         FormaPagamento formaPagamento = formaPagamentoRegistry.getMapFormasDePagamento().get(new IdFormaPagamento(pedido.formaPagamento()));
-
-//        Collection<FormaPagamento> listFormasPagamento = formaPagamentoRegistry.listAll();
-//
-//        FormaPagamento formaPagamentoEncontrada = listFormasPagamento.stream()
-//                .filter(formaPagamento -> formaPagamento.id().equals(pedido.formaPagamento()))
-//                .findFirst()
-//                .orElse(null);
-
-
 
         FormaPagamento.InfoPagamentoExterno infoPagamentoExterno;
         if (formaPagamento.isIntegracaoExterna()) {
