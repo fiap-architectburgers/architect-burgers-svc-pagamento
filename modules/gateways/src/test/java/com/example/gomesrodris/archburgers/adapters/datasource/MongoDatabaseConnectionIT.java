@@ -9,7 +9,6 @@ import org.springframework.core.env.Environment;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class MongoDatabaseConnectionIT {
 
@@ -62,6 +61,9 @@ class MongoDatabaseConnectionIT {
 
         try (MongoDatabaseConnection mongoDatabaseConnection = new MongoDatabaseConnection(env)) {
             assertThat(mongoDatabaseConnection.getConnection()).isNotNull();
+
+            var result = mongoDatabaseConnection.runInTransaction(() -> "Inside Result");
+            assertThat(result).isEqualTo("Inside Result");
         }
 
     }

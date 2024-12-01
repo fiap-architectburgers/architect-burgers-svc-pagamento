@@ -78,13 +78,9 @@ public class MercadoPagoApi {
 
         try {
             return executeRequest(webRequest);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             LOGGER.error("Error in MercadoPago create Order request: [{}] -- {}", uri, payload);
-            if (e instanceof RuntimeException) {
-                throw e;
-            } else {
-                throw new RuntimeException(e);
-            }
+            throw e;
         }
     }
 

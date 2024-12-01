@@ -41,7 +41,8 @@ class PagamentoUseCasesTest {
     @Mock
     private PagamentoEventMessagingGateway pagamentoEventMessagingGateway;
 
-    private Clock clock= new Clock();
+    @Mock
+    private Clock clock;
 
     @BeforeEach
     void setUp() {
@@ -135,6 +136,8 @@ class PagamentoUseCasesTest {
 
     @Test
     public void iniciarPagamentoPedidoZerado(){
+        LocalDateTime dataHora = LocalDateTime.of(2024, 11, 15, 18, 30, 59);
+        when(clock.localDateTime()).thenReturn(dataHora);
 
         ItemCardapio itemCardapioFail1 = new ItemCardapio(21, TipoItemCardapio.LANCHE, "Hamburger Vegetariano",
                 "Hamburger de ervilha com queijo vegano",
@@ -172,6 +175,37 @@ class PagamentoUseCasesTest {
 
     @Test
     void finalizarPagamentoPedidoNaoEncontrado() {
+        assertThrows(DomainArgumentException.class, () -> pagamentoUseCases.finalizarPagamento(pedido.id(), "123456"));
+    }
+
+    @Test
+    void finalizarPagamentoComSucesso() {
+        LocalDateTime dataHoraAtualizacao = LocalDateTime.of(2024, 11, 15, 18, 30, 59);
+        when(clock.localDateTime()).thenReturn(dataHoraAtualizacao);
+
+        Pagamento pagamentoPendente = new Pagamento("233", pedido.id(), formaPagamento, StatusPagamento.PENDENTE, pedido.getValorTotal(), dataHoraPedido, dataHoraPedido, null, null);
+        Mockito.when(pagamentoGateway.findPagamentoByPedido(pedido.id())).thenReturn(pagamentoPendente);
+
+        Pagamento expectedFinalizado = new Pagamento("233", pedido.id(), formaPagamento, StatusPagamento.FINALIZADO, pedido.getValorTotal(), dataHoraPedido, dataHoraAtualizacao, null, "NEWID123");
+
+        String status = pagamentoUseCases.finalizarPagamento(pedido.id(), "NEWID123");
+        assertEquals("FINALIZADO", status);
+
+        verify(pagamentoGateway).updateStatus(expectedFinalizado);
+    }
+
+    @Test
+    void finalizarPagamentoComErro() {
+        Pagamento pagamentoFinalizado = new Pagamento("233", pedido.id(), formaPagamento, StatusPagamento.FINALIZADO, pedido.getValorTotal(), dataHoraPedido, dataHoraPedido, "123456", "123");
+        Mockito.when(pagamentoGateway.findPagamentoByPedido(pedido.id())).thenReturn(pagamentoFinalizado);
+
+        assertThrows(DomainArgumentException.class, () -> pagamentoUseCases.finalizarPagamento(pedido.id(), "123456"));
+    }
+
+    @Test
+    void finalizarPagamentoComPedidoNaoEncontrado() {
+        Mockito.when(pagamentoGateway.findPagamentoByPedido(pedido.id())).thenReturn(null);
+
         assertThrows(DomainArgumentException.class, () -> pagamentoUseCases.finalizarPagamento(pedido.id(), "123456"));
     }
 
